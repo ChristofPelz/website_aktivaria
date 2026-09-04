@@ -1,0 +1,42 @@
+---
+// Blob path extracted 1:1 from the Figma source file (node 31:157 and its
+// siblings) — the same organic shape is reused per card, just recolored and
+// offset. See conversation notes for the extraction method.
+const BLOB_PATH =
+  "M 618 201.5 C 618 312.7853775024414 479.65599060058594 403 309 403 C 138.34400939941406 403 0 312.7853775024414 0 201.5 C 0 90.2146224975586 138.34400939941406 0 309 0 C 479.65599060058594 0 618 90.2146224975586 618 201.5 Z";
+
+interface Props {
+  href: string;
+  title: string;
+  image: string;
+  color: string;
+  /** width : height, matching the photo's real crop ratio in Figma */
+  aspect: string;
+  blobOffsetX: number;
+  blobOffsetY: number;
+  blobWidth: number;
+}
+
+const { href, title, image, color, aspect, blobOffsetX, blobOffsetY, blobWidth } = Astro.props;
+---
+
+<a href={href} class="group block">
+  <div class="relative" style={`aspect-ratio: ${aspect};`}>
+    <svg
+      viewBox="0 0 618 403"
+      class="absolute"
+      style={`width: ${blobWidth}%; aspect-ratio: 618 / 403; left: ${blobOffsetX}%; top: ${blobOffsetY}%; fill: ${color};`}
+    >
+      <path d={BLOB_PATH} />
+    </svg>
+    <img
+      src={image}
+      alt=""
+      class="relative w-full rounded-[28px] object-cover shadow-[0_20px_35px_-10px_rgba(13,27,58,0.45)] transition duration-300 group-hover:scale-[1.03]"
+      style={`aspect-ratio: ${aspect};`}
+    />
+    <span class="absolute bottom-[4%] left-[4%] text-sm font-semibold text-white drop-shadow-sm">
+      {title}
+    </span>
+  </div>
+</a>

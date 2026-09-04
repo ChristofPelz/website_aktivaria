@@ -1,0 +1,16 @@
+---
+interface Props {
+  title: string;
+  note?: string;
+}
+
+const { title, note } = Astro.props;
+---
+
+<section class="mx-auto max-w-3xl px-6 py-28 text-center">
+  <h1 class="text-4xl font-medium sm:text-5xl">{title}</h1>
+  <p class="mt-6 text-brand-blue/70">
+    {note ?? "Diese Seite wird als Nächstes aus dem Figma-Entwurf übertragen."}
+  </p>
+  <a href="/" class="mt-8 inline-block text-sm font-semibold underline">Zurück zur Startseite</a>
+</section>

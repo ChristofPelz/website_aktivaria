@@ -1,0 +1,417 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Button from "../components/Button.astro";
+import BlobTile from "../components/BlobTile.astro";
+
+// Aspect ratio and blob offset/size per card are the real measurements taken
+// from the Figma file (photo crop box vs. accent-blob position, both in
+// absolute canvas px) — not eyeballed. Each card's photo crop is a different
+// size in the source design, so the tiles are intentionally not uniform.
+const categories = [
+  {
+    title: "Bewegungsschule",
+    href: "/bewegungsschule",
+    image: "/images/home/category-bewegungsschule.png",
+    color: "#edd515",
+    aspect: "318 / 424",
+    blobOffsetX: -86.5,
+    blobOffsetY: 73,
+    blobWidth: 194,
+  },
+  {
+    title: "Schwimmschule",
+    href: "/schwimmschule",
+    image: "/images/home/category-schwimmschule.png",
+    color: "#7bd1ed",
+    aspect: "318 / 425",
+    blobOffsetX: -87,
+    blobOffsetY: 68,
+    blobWidth: 194,
+  },
+  {
+    title: "Kinderbetreuung",
+    href: "/kinderbetreuung",
+    image: "/images/home/category-kinderbetreuung.png",
+    color: "#e3a6ba",
+    aspect: "447 / 298",
+    blobOffsetX: -53,
+    blobOffsetY: 64,
+    blobWidth: 138,
+  },
+  {
+    title: "Betriebliche Gesundheitsförderung",
+    href: "/unternehmen",
+    image: "/images/home/category-bgf.png",
+    color: "#007f8f",
+    aspect: "325 / 435",
+    blobOffsetX: -84,
+    blobOffsetY: 62,
+    blobWidth: 190,
+  },
+  {
+    title: "Ernährungsschule",
+    href: "/ernaehrung",
+    image: "/images/home/category-ernaehrung.png",
+    color: "#df9157",
+    aspect: "481 / 374",
+    blobOffsetX: -47,
+    blobOffsetY: 71,
+    blobWidth: 128,
+  },
+];
+
+const partnerLogos = [
+  { name: "AOK", file: "partner-iok.svg" },
+  { name: "MDCC", file: "partner-mdcc.svg" },
+  { name: "BARMER", file: "partner-barmer.png" },
+  { name: "DECATHLON", file: "partner-decathlon.png" },
+  { name: "DHL", file: "partner-dhl.png" },
+  { name: "Europaschule Gymnasium Gommern", file: "partner-europaschule-gommern.png" },
+  { name: "JOHANNITER", file: "partner-johanniter.svg" },
+  { name: "WOBAU", file: "partner-wobau.png" },
+  { name: "MWG", file: "partner-mw.svg" },
+];
+
+// Order and colors match the Figma source exactly: cards zigzag between two
+// rows (odd positions high, even positions low) and each reuses one of the
+// category brand colors (sampled from the "aktiVaria Colors" collection).
+const values = [
+  {
+    eyebrow: "PERSÖNLICH",
+    text: "Wir hören zu und entwickeln Angebote, die wirklich zu den Menschen und ihren Bedürfnissen passen.",
+    color: "var(--color-category-schwimmschule)",
+  },
+  {
+    eyebrow: "PROFESSIONELL",
+    text: "Qualifizierte Fachkräfte, durchdachte Konzepte und langjährige Erfahrung bilden die Grundlage unserer Arbeit.",
+    color: "var(--color-category-bewegungsschule)",
+  },
+  {
+    eyebrow: "KINDGERECHT",
+    text: "Kinder dürfen bei uns entdecken, ausprobieren, lernen und in ihrem eigenen Tempo wachsen.",
+    color: "var(--color-category-kinderbetreuung)",
+  },
+  {
+    eyebrow: "INDIVIDUELL",
+    text: "Von regelmäßigen Kursen bis zu maßgeschneiderten Unternehmenslösungen gestalten wir unsere Angebote flexibel.",
+    color: "var(--color-category-bgf)",
+  },
+  {
+    eyebrow: "MIT HERZ",
+    text: "Wir möchten positive Erfahrungen schaffen, die in Erinnerung bleiben.",
+    color: "var(--color-category-ernaehrung)",
+  },
+];
+
+const stats = [
+  { value: "100+", label: "durchgeführte Gesundheitsmaßnahmen" },
+  { value: "XX", label: "Unternehmen betreut" },
+  { value: "X.XXX", label: "erreichte Mitarbeitende" },
+  { value: "10+ Jahre", label: "Erfahrung" },
+];
+
+const certifiedOfferings = [
+  {
+    title: "Bewegungsschule",
+    tag: "Geprüftes Präventionsangebot",
+    description:
+      'Das Kursangebot „aktiVaria Bewegungsschule – Beweglichkeit und Ausdauer“ wurde nach den Qualitätskriterien des Leitfadens Prävention gemäß § 20 SGB V geprüft. Das Konzept verbindet altersgerechte Bewegung mit der Förderung von Ausdauer, Beweglichkeit und körperlicher Aktivität.',
+    image: "/images/home/qualifikation-bewegungsschule.png",
+  },
+  {
+    title: "Rücken-Fit",
+    tag: "Qualitätsgeprüftes Rückentraining",
+    description:
+      'Das Präventionsangebot „Rücken-Fit Kraft/Koordination“ wurde nach den Qualitätskriterien des Leitfadens Prävention gemäß § 20 SGB V geprüft. Der Kurs dient der Kräftigung des Bewegungsapparates, der Verbesserung der Koordination und der Vorbeugung von Rückenbeschwerden.',
+    image: "/images/home/qualifikation-rueckenfit.svg",
+  },
+  {
+    title: "Faszientraining",
+    tag: "Professionelles Faszientraining",
+    description:
+      "Die Fachqualifikation zum Faszientrainer umfasst fundierte Kenntnisse zu Anatomie und Physiologie, Faszientechniken, Flossing, Cupping sowie zum professionellen Aufbau von Trainingsstunden. Dadurch können Beweglichkeit, Körperwahrnehmung und funktionale Bewegungsabläufe gezielt gefördert werden.",
+    image: "/images/home/qualifikation-faszientraining.png",
+  },
+];
+
+const teamQualifications = [
+  {
+    title: "Präventionskurskonzept „Beweglichkeitsorientiertes Faszientraining“",
+    tag: "Geprüftes Konzept für beweglichkeitsorientiertes Faszientraining",
+    description:
+      "Unser Team verfügt über eine Einweisung in ein nach § 20 Abs. 1 SGB V geprüftes Präventionskurskonzept. Im Mittelpunkt stehen die Reduzierung von Bewegungsmangel sowie die gezielte Förderung von Beweglichkeit und gesundheitsorientierter Aktivität.",
+    image: "/images/home/qualifikation-praeventionskurskonzept.png",
+  },
+  {
+    title: "AquaFitness",
+    tag: "Qualifikation im Bereich AquaFitness",
+    description:
+      "Durch die erfolgreich absolvierte AquaFitness-Ausbildung nach den Richtlinien des Bundesverbandes für AquaPädagogik verfügt unser Team über fundierte Kenntnisse für die professionelle Gestaltung abwechslungsreicher und gesundheitsorientierter Bewegungsangebote im Wasser.",
+    image: "/images/home/qualifikation-aquafitness.png",
+  },
+  {
+    title: "MHFA-Ersthelfer für psychische Gesundheit",
+    tag: "Erste Hilfe für psychische Gesundheit",
+    description:
+      "Als ausgebildeter MHFA-Ersthelfer verfügt Mario Middendorf über Kenntnisse, um Anzeichen psychischer Belastungen frühzeitig wahrzunehmen, angemessen darauf zu reagieren und Betroffene bei der Suche nach professioneller Unterstützung zu begleiten.",
+    image: "/images/home/qualifikation-mhfa.png",
+  },
+  {
+    title: "Berater und Coach für Persönlichkeitsentwicklung",
+    tag: "Persönlichkeitsentwicklung und Wohlbefinden stärken",
+    description:
+      'Die Weiterbildung „Lernziel Wohlbefinden“ des Fritz-Schubert-Instituts vermittelt wissenschaftlich fundierte Ansätze zur ganzheitlichen Persönlichkeitsentwicklung. Dazu gehören unter anderem die Förderung von Stärken, Selbstwirksamkeit, Motivation, Entscheidungsfähigkeit, Reflexion und psychologischem Wohlbefinden.',
+    image: "/images/home/qualifikation-berater-coach.png",
+  },
+  {
+    title: "Prüferqualifikation Deutsches Sportabzeichen",
+    tag: "Qualifikation rund um das Deutsche Sportabzeichen",
+    description:
+      "Durch die Weiterbildung des Landessportbundes Sachsen-Anhalt verfügt Mario Middendorf über Kenntnisse zu den Prüfungsanforderungen, Leistungsbedingungen, Sicherheitsaspekten und Abläufen des Deutschen Sportabzeichens.",
+    image: "/images/home/qualifikation-sportabzeichen.png",
+  },
+  {
+    title: "Ausbildereignung nach AEVO",
+    tag: "Geprüfte Ausbildungsqualität",
+    description:
+      "Mit der erfolgreich bestandenen Prüfung nach der Ausbilder-Eignungsverordnung verfügt Mario Middendorf über nachgewiesene berufs- und arbeitspädagogische Kenntnisse und Fähigkeiten. Damit schafft aktiVaria auch bei der Anleitung und Entwicklung von Mitarbeitenden und Nachwuchskräften professionelle Rahmenbedingungen.",
+    image: "/images/home/qualifikation-ausbildereignung.png",
+  },
+  {
+    title: "Deutsches Rettungsschwimmabzeichen",
+    tag: "Geprüfte Sicherheit im Wasser",
+    description:
+      "Unsere Trainer verfügen über das Deutsche Rettungsschwimmabzeichen und sind für das Erkennen von Gefahrensituationen sowie grundlegende Maßnahmen der Wasserrettung qualifiziert. Sicherheit und verantwortungsbewusstes Handeln bilden damit eine wichtige Grundlage unserer Schwimmangebote.",
+    image: "/images/home/qualifikation-rettungsschwimmabzeichen.png",
+  },
+];
+---
+
+<BaseLayout
+  title="Startseite"
+  description="Gesundheit, Bewegung und gemeinsame Erlebnisse für Kinder, Familien und Unternehmen."
+  audience="familie"
+>
+  <!-- Hero -->
+  <section class="relative overflow-hidden bg-brand-navy text-white">
+    <img src="/images/home/hero.png" alt="" class="absolute inset-0 h-full w-full object-cover" />
+    <div class="absolute inset-0 bg-gradient-to-br from-brand-blue/90 via-brand-navy/85 to-black/80"></div>
+    <div class="relative mx-auto max-w-5xl px-6 py-28 text-center sm:py-36">
+      <h1 class="text-4xl font-bold leading-tight sm:text-6xl">
+        Gesundheit, Bewegung und gemeinsame Erlebnisse
+        <span class="block">Für Kinder, Familien und Unternehmen.</span>
+      </h1>
+      <p class="mx-auto mt-6 max-w-2xl text-lg text-white/85 sm:text-2xl">
+        Mit vielseitigen Angeboten begleiten wir Kinder, Familien und Unternehmen auf dem Weg zu
+        mehr Bewegung, Gesundheit und Lebensfreude.
+      </p>
+      <div class="mt-10 flex flex-wrap justify-center gap-4">
+        <Button href="/bewegungsschule" variant="outline-light">
+          Angebote für Familien entdecken
+        </Button>
+        <Button href="/unternehmen" variant="outline-light">Lösungen für Unternehmen</Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories -->
+  <section
+    class="relative bg-brand-navy bg-cover bg-top px-6 py-20"
+    style="background-image: url('/images/home/bg-categories.png');"
+  >
+    <div class="relative mx-auto max-w-3xl text-center text-white">
+      <h2 class="text-3xl font-medium sm:text-4xl">Gesundheit und Entwicklung, die sich gut anfühlen</h2>
+      <p class="mt-4 text-white/85">
+        Bei aktiVaria steht der Mensch im Mittelpunkt. Wir schaffen Räume, in denen Kinder
+        spielerisch wachsen, Familien wertvolle gemeinsame Erfahrungen sammeln und Unternehmen
+        Gesundheit nachhaltig in ihren Arbeitsalltag integrieren können.
+      </p>
+      <p class="mt-3 text-white/85">
+        Unsere Angebote verbinden fundiertes Fachwissen mit Bewegung, Freude und persönlicher
+        Begleitung. Dabei entstehen Erlebnisse, die stärken, verbinden und langfristig etwas
+        bewegen.
+      </p>
+    </div>
+
+    <div
+      class="relative mx-auto mt-14 mb-24 grid max-w-5xl items-start sm:grid-cols-3"
+      style="column-gap: 13%; row-gap: 15%;"
+    >
+      {categories.map((cat) => <BlobTile {...cat} />)}
+    </div>
+  </section>
+
+  <!-- Was uns bewegt + Momente, die bewegen -->
+  <section
+    class="bg-brand-sky bg-cover bg-top px-6 py-20"
+    style="background-image: url('/images/home/bg-wasunsbewegt.png');"
+  >
+    <div class="mx-auto max-w-3xl text-center">
+      <h2 class="text-3xl font-medium sm:text-4xl">Was uns bewegt</h2>
+      <p class="mt-4 text-lg">
+        Wir glauben, dass nachhaltige Entwicklung dort beginnt, wo Menschen sich gesehen, sicher
+        und motiviert fühlen. Deshalb verbinden wir Fachkompetenz mit persönlicher Nähe und echter
+        Freude an dem, was wir tun.
+      </p>
+    </div>
+    <div class="mx-auto mt-14 grid max-w-5xl gap-x-6 gap-y-8 sm:grid-cols-5">
+      {
+        values.map((v, i) => (
+          <div
+            class:list={["rounded-[28px] p-6 text-white shadow-[0_3px_6px_rgba(0,0,0,0.16)] sm:col-span-1", i % 2 === 1 && "sm:mt-10"]}
+            style={`background-color: ${v.color};`}
+          >
+            <p class="text-lg font-bold leading-tight">{v.eyebrow}</p>
+            <p class="mt-3 text-sm">{v.text}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="mx-auto mt-28 max-w-3xl text-center">
+      <h2 class="text-3xl font-medium sm:text-4xl">Momente, die bewegen.</h2>
+      <p class="mt-4 text-lg">
+        Ein mutiger erster Sprung ins Wasser. Ein stolzes Lächeln nach einer neuen Bewegung. Ein
+        Team, das gemeinsam neue Energie findet. Genau diese kleinen und großen Momente machen
+        unsere Arbeit besonders.
+      </p>
+      <img
+        src="/images/home/gallery-strip.png"
+        alt="Momentaufnahmen aus dem aktiVaria-Alltag"
+        class="mx-auto mt-10 w-full max-w-5xl"
+      />
+      <div class="mx-auto mt-6 flex w-fit items-center gap-1.5">
+        <span class="h-1.5 w-6 rounded-full bg-brand-blue/70"></span>
+        <span class="h-1.5 w-1.5 rounded-full bg-brand-blue/25"></span>
+        <span class="h-1.5 w-1.5 rounded-full bg-brand-blue/25"></span>
+        <span class="h-1.5 w-1.5 rounded-full bg-brand-blue/25"></span>
+        <span class="h-1.5 w-1.5 rounded-full bg-brand-blue/25"></span>
+      </div>
+      <Button href="/team" variant="outline" class="mt-10">Mehr über aktiVaria erfahren</Button>
+    </div>
+  </section>
+
+  <!-- Partner-Logos -->
+  <section class="mx-auto max-w-5xl px-6 pb-16">
+    <div class="flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
+      {
+        partnerLogos.map((logo) => (
+          <img
+            src={`/images/home/${logo.file}`}
+            alt={logo.name}
+            class="h-10 w-auto object-contain sm:h-12"
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Vertrauen / Stats -->
+  <section class="bg-brand-blue px-6 py-20 text-white">
+    <div class="mx-auto max-w-3xl text-center">
+      <h2 class="text-3xl font-medium sm:text-4xl">Vertrauen entsteht durch gute Erfahrungen.</h2>
+      <p class="mt-4 text-lg text-white/85">
+        Familien, Einrichtungen und Unternehmen vertrauen auf die persönliche Betreuung und die
+        vielseitigen Angebote von aktiVaria. Gemeinsam mit unseren Partnern schaffen wir
+        nachhaltige Gesundheits- und Bewegungserlebnisse in Magdeburg und darüber hinaus.
+      </p>
+    </div>
+    <div class="mx-auto mt-14 grid max-w-4xl gap-8 text-center sm:grid-cols-4">
+      {
+        stats.map((s) => (
+          <div>
+            <p class="text-3xl font-bold">{s.value}</p>
+            <p class="mt-1 text-sm text-white/80">{s.label}</p>
+          </div>
+        ))
+      }
+    </div>
+    <div class="mt-10 text-center">
+      <Button href="/team" variant="outline-light">aktiVaria kennenlernen</Button>
+    </div>
+  </section>
+
+  <!-- Team -->
+  <section class="mx-auto max-w-5xl px-6 py-20">
+    <div class="grid items-center gap-10 md:grid-cols-2">
+      <div class="relative">
+        <svg width="0" height="0" class="absolute">
+          <clipPath id="team-blob" clipPathUnits="objectBoundingBox" transform="scale(0.0012248, 0.0010715)">
+            <path d="M380.566 56.4723C321.907 91.6195 268.907 137.447 215.19 180.411C136.478 243.367 49.6485 307.17 15.8592 402.132C-7.30757 467.24 -2.03883 539.153 12.2339 606.771C27.5114 679.155 53.8624 751.291 103.205 806.413C156.498 865.947 232.74 900.984 310.648 918.742C412.354 941.923 519.998 937.035 619.647 906.543C704.48 880.585 822.991 835.454 816.097 728.495C813.383 686.44 796.332 646.826 786.236 605.912C768.699 534.831 772.306 460.493 775.032 387.33C777.76 314.17 779.306 239.464 757.953 169.435C736.6 99.4035 688.263 33.6814 618.981 10.0111C567.105 -7.71153 509.403 -0.115394 457.963 18.8374C430.851 28.8286 405.209 41.7084 380.566 56.4723Z" />
+          </clipPath>
+        </svg>
+        <img
+          src="/images/home/team-photo.png"
+          alt="Das aktiVaria-Team"
+          class="aspect-[816/933] w-full object-cover"
+          style="clip-path: url(#team-blob);"
+        />
+      </div>
+      <div class="text-center md:text-left">
+        <h2 class="text-3xl font-medium sm:text-4xl">Menschen bewegen Menschen</h2>
+        <p class="mt-2 text-sm font-medium text-brand-blue/70">DAS TEAM HINTER AKTIVARIA</p>
+        <p class="mt-4">
+          Hinter aktiVaria steht ein engagiertes Team mit vielfältigen fachlichen Kompetenzen und
+          einer gemeinsamen Leidenschaft: Menschen zu mehr Bewegung, Gesundheit und Lebensfreude zu
+          inspirieren.
+        </p>
+        <p class="mt-4">
+          Mit Erfahrung, Einfühlungsvermögen und echter Begeisterung begleiten wir Kinder, Familien
+          und Unternehmen ganz persönlich.
+        </p>
+        <div class="mt-6 flex justify-center gap-6 md:justify-start">
+          <img src="/images/icons/team-health.svg" alt="" class="h-9 w-auto" />
+          <img src="/images/icons/team-checklist.svg" alt="" class="h-9 w-auto" />
+          <img src="/images/icons/team-person-heart.svg" alt="" class="h-9 w-auto" />
+        </div>
+        <Button href="/team" variant="outline" class="mt-6">Unser Team kennenlernen</Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Qualifikationen -->
+  <section class="bg-brand-sky px-6 py-20">
+    <div class="mx-auto max-w-3xl text-center">
+      <h2 class="text-3xl font-medium sm:text-4xl">Qualifikationen &amp; zertifizierte Angebote</h2>
+      <p class="mt-4 text-lg">
+        Qualitätsgeprüfte Konzepte und fundierte Fachkompetenz bilden die Grundlage unserer Arbeit.
+      </p>
+    </div>
+
+    <div class="mx-auto mt-14 max-w-6xl">
+      <h3 class="text-xl font-semibold">Zertifizierte Angebote</h3>
+      <div class="mt-6 grid gap-6 md:grid-cols-3">
+        {
+          certifiedOfferings.map((c) => (
+            <div class="flex gap-4 rounded-2xl bg-white p-6 shadow-sm">
+              <img src={c.image} alt="" class="h-14 w-14 shrink-0 object-contain" />
+              <div>
+                <p class="font-bold">{c.title}</p>
+                <p class="mt-1 text-sm font-medium text-brand-blue/70">{c.tag}</p>
+                <p class="mt-3 text-xs leading-relaxed text-brand-blue/80">{c.description}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="mx-auto mt-14 max-w-6xl">
+      <h3 class="text-xl font-semibold">Qualifikationen unseres Teams</h3>
+      <div class="mt-6 grid gap-6 md:grid-cols-2">
+        {
+          teamQualifications.map((q) => (
+            <div class="flex gap-4 rounded-2xl bg-white p-6 shadow-sm">
+              <img src={q.image} alt="" class="h-14 w-14 shrink-0 object-contain" />
+              <div>
+                <p class="font-bold">{q.title}</p>
+                <p class="mt-1 text-sm font-medium text-brand-blue/70">{q.tag}</p>
+                <p class="mt-3 text-xs leading-relaxed text-brand-blue/80">{q.description}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Roboto", ui-sans-serif, system-ui, sans-serif;
+
+  --color-brand-blue: #1b3f86;
+  --color-brand-blue-dark: #12294f;
+  --color-brand-navy: #0d1b3a;
+  --color-brand-sky: #eef3fb;
+  --color-brand-logo-accent: #092972;
+
+  /* Sampled directly from the Figma file's actual fills (aktiVaria Colors
+     variable collection) — not approximated. */
+  --color-category-bewegungsschule: #edd515;
+  --color-category-schwimmschule: #7bd1ed;
+  --color-category-kinderbetreuung: #e3a6ba;
+  --color-category-bgf: #007f8f;
+  --color-category-ernaehrung: #df9157;
+
+  --color-accent-lime: #afcb05;
+  --color-accent-crimson: #eb003c;
+  --color-accent-blue: #004288;
+  --color-accent-orange: #f07c00;
+  --color-neutral-dark: #2e2e2d;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-brand-blue);
+}
