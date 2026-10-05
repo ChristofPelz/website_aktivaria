@@ -36,8 +36,11 @@ genauso aufgebaut, damit Text echter Text bleibt:
 - `was-uns-bewegt-wave.webp`: Wellenbild mit `mix-blend-mode: multiply`.
 
 Die Rasterbilder sind 1:1-Renderings der jeweiligen Figma-Ebene, die Zierblasen (`public/images/decor`)
-SVG-Exporte. In vier dieser SVGs sind Verläufe ohne Länge durch Weiß ersetzt, weil Figma solche Verläufe
-mit dem ersten Farbstopp (Weiß) zeichnet, Browser aber mit dem letzten (Blau).
+SVG-Exporte. Die 18 Fotos des Laufbands (`public/images/home/momente`) sind einzeln in 1,5-facher Auflösung
+gerendert, mit der Blob-Maske als Transparenz.
+
+In vier der Zierblasen-SVGs sind Verläufe ohne Länge durch Weiß ersetzt, weil Figma solche Verläufe mit dem
+ersten Farbstopp (Weiß) zeichnet, Browser aber mit dem letzten (Blau).
 
 ## Bewusste Abweichungen vom Entwurf
 
@@ -47,6 +50,10 @@ mit dem ersten Farbstopp (Weiß) zeichnet, Browser aber mit dem letzten (Blau).
   Copyright und dunkelt sie ab. Das ist eine Folge der Ebenenreihenfolge aus dem XD-Import. Im Code ist der
   gesamte Footer-Inhalt weiß, wie es der Design-System-Hinweis zum Footer-Link vorsieht.
 - Rettungsschwimmabzeichen: "und ist für das Erkennen" ist zu "und sind für das Erkennen" korrigiert.
-- Die Partnerlogos beginnen links bündig statt angeschnitten. Logo-Reihe und Bildstreifen lassen sich
-  seitlich scrollen, die Anzeige darunter folgt der Position.
+- "Mitarbeitende" heißt im Code "Mitarbeiter" (Kennzahlen, Ausbildereignung). Auf der Website wird nicht gegendert.
+- Der Bildstreifen "Momente, die bewegen" läuft als endloses Laufband (`MomenteLaufband.astro`) mit allen
+  18 Fotos aus Figma. Er hält beim Überfahren mit der Maus, bei Tastaturfokus und beim Antippen an und steht
+  still, wenn im System "Bewegung reduzieren" eingestellt ist. Die Anzeige darunter folgt dem Durchlauf.
+- Die Partnerlogos beginnen links bündig statt angeschnitten. Die Logo-Reihe lässt sich seitlich scrollen,
+  die Anzeige darunter folgt der Position.
 - Roboto wird selbst ausgeliefert (`@fontsource/roboto`) statt von Google Fonts geladen.

@@ -1,8 +1,8 @@
 ---
 // Fünfteilige Positionsanzeige unter Bildstreifen und Partnerlogos
 // (icon/was-uns-bewegt-momente-3). Aktives Segment 167 px, übrige 59 px,
-// auf dem Smartphone verkleinert.
-// Lässt sich der zugehörige Streifen nicht scrollen, bleibt Segment 1 aktiv.
+// auf dem Smartphone verkleinert. Bei scrollbaren Streifen folgt sie der Scrollposition,
+// beim Laufband (data-marquee) dem Fortschritt der Animation.
 interface Props {
   target: string;
   label: string;
@@ -39,23 +39,43 @@ const segments = [0, 1, 2, 3, 4];
     const buttons = [...indicator.querySelectorAll<HTMLButtonElement>("button")];
     const max = () => strip.scrollWidth - strip.clientWidth;
 
-    const update = () => {
-      const range = max();
-      const active = range > 0 ? Math.round((strip.scrollLeft / range) * (buttons.length - 1)) : 0;
+    const setActive = (active: number) =>
       buttons.forEach((b, i) => {
         if (i === active) b.setAttribute("aria-current", "true");
         else b.removeAttribute("aria-current");
       });
+
+    // Laufband: die Anzeige folgt dem Fortschritt der Animation, ein Klick springt dorthin.
+    const marquee = () => {
+      const track = strip.hasAttribute("data-marquee") ? strip.firstElementChild : null;
+      const animation = track?.getAnimations()[0];
+      const duration = Number(animation?.effect?.getComputedTiming().duration);
+      return animation && duration > 0 ? { animation, duration } : null;
+    };
+
+    const update = () => {
+      const m = marquee();
+      if (m) {
+        const progress = (Number(m.animation.currentTime) % m.duration) / m.duration;
+        setActive(Math.min(buttons.length - 1, Math.floor(progress * buttons.length)));
+        return;
+      }
+      const range = max();
+      setActive(range > 0 ? Math.round((strip.scrollLeft / range) * (buttons.length - 1)) : 0);
     };
 
     buttons.forEach((b, i) =>
       b.addEventListener("click", () => {
-        strip.scrollTo({ left: (max() * i) / (buttons.length - 1), behavior: "smooth" });
+        const m = marquee();
+        if (m) m.animation.currentTime = (m.duration * i) / buttons.length;
+        else strip.scrollTo({ left: (max() * i) / (buttons.length - 1), behavior: "smooth" });
+        update();
       }),
     );
 
     strip.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
+    if (strip.hasAttribute("data-marquee")) window.setInterval(update, 250);
     update();
   }
 
