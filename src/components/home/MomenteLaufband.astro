@@ -1,9 +1,10 @@
 ---
-// Bildstreifen "Momente, die bewegen" als endloses Laufband. Lage und Größe der
-// 18 Fotos stammen aus der Gruppe img/was-uns-bewegt-momente-4 in Figma (Maßeinheit
-// px bei 1920 px Breite, gemessen ab dem ersten Foto). Der Streifen wiederholt sich
-// nach PERIOD px, die zweite Kopie sorgt für den nahtlosen Übergang. Die Fotos laden
-// nicht verzögert: im beschnittenen Streifen würde "lazy" sie erst beim Hereinlaufen holen.
+import Laufband from "../Laufband.astro";
+
+// Bildstreifen "Momente, die bewegen". Lage und Größe der 18 Fotos stammen aus der
+// Gruppe img/was-uns-bewegt-momente-4 in Figma (px bei 1920 px Breite, gemessen ab dem
+// ersten Foto). Der Streifen wiederholt sich nach PERIOD px. Die Fotos laden nicht
+// verzögert: im beschnittenen Streifen würde "lazy" sie erst beim Hereinlaufen holen.
 const PERIOD = 4836.7;
 const HEIGHT = 489;
 // Erstes Foto beginnt in Figma 119,41 px links vom Bildrand.
@@ -43,84 +44,32 @@ const bubbles = [
 const u = (v: number) => `calc(${v} * var(--u))`;
 ---
 
-<div
-  class="laufband relative cursor-pointer overflow-hidden"
-  data-slider="momente"
-  data-marquee
-  role="region"
-  aria-label="Momentaufnahmen aus den Angeboten von aktiVaria, läuft automatisch, Antippen hält an"
->
-  <div class="laufband-track flex w-max" style={`margin-left:${u(-START)}`}>
+<Laufband id="momente" label="Momentaufnahmen aus den Angeboten von aktiVaria" duration={120} start={START}>
+  <div class="relative" style={`width:${u(PERIOD)};height:${u(HEIGHT)}`}>
     {
-      [0, 1].map((copy) => (
-        <div
-          class="relative shrink-0"
-          style={`width:${u(PERIOD)};height:${u(HEIGHT)}`}
-          aria-hidden={copy === 1 ? "true" : undefined}
-        >
-          {photos.map((p) => (
-            <img
-              src={`/images/home/momente/${p.src}`}
-              alt={copy === 0 ? p.alt : ""}
-              decoding="async"
-              fetchpriority="low"
-              width={Math.round(p.w)}
-              height={Math.round(p.h)}
-              class="absolute max-w-none"
-              style={`left:${u(p.x)};top:${u(p.y)};width:${u(p.w)};height:${u(p.h)}`}
-            />
-          ))}
-          {bubbles.map((b) => (
-            <img
-              src={`/images/decor/${b.src}`}
-              alt=""
-              aria-hidden="true"
-              class="pointer-events-none absolute h-auto max-w-none"
-              style={`left:${u(b.x)};top:${u(b.y)};width:${u(b.w)}`}
-            />
-          ))}
-        </div>
+      photos.map((p) => (
+        <img
+          src={`/images/home/momente/${p.src}`}
+          alt={p.alt}
+          decoding="async"
+          fetchpriority="low"
+          width={Math.round(p.w)}
+          height={Math.round(p.h)}
+          class="absolute max-w-none"
+          style={`left:${u(p.x)};top:${u(p.y)};width:${u(p.w)};height:${u(p.h)}`}
+        />
+      ))
+    }
+    {
+      bubbles.map((b) => (
+        <img
+          src={`/images/decor/${b.src}`}
+          alt=""
+          aria-hidden="true"
+          class="pointer-events-none absolute h-auto max-w-none"
+          style={`left:${u(b.x)};top:${u(b.y)};width:${u(b.w)}`}
+        />
       ))
     }
   </div>
-</div>
-
-<style>
-  /* Bis 1920 px skaliert der Streifen mit der Fensterbreite, auf dem Smartphone nicht kleiner als 55 %. */
-  .laufband {
-    --u: clamp(0.55px, calc(100vw / 1920), 1px);
-  }
-
-  .laufband-track {
-    animation: laufband 120s linear infinite;
-  }
-
-  .laufband:hover .laufband-track,
-  .laufband:focus-within .laufband-track,
-  .laufband.is-paused .laufband-track {
-    animation-play-state: paused;
-  }
-
-  @keyframes laufband {
-    to {
-      transform: translateX(-50%);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .laufband {
-      overflow-x: auto;
-      cursor: auto;
-    }
-
-    .laufband-track {
-      animation: none;
-    }
-  }
-</style>
-
-<script>
-  document.querySelectorAll<HTMLElement>(".laufband").forEach((band) => {
-    band.addEventListener("click", () => band.classList.toggle("is-paused"));
-  });
-</script>
+</Laufband>

@@ -51,9 +51,9 @@ ersten Farbstopp (Weiß) zeichnet, Browser aber mit dem letzten (Blau).
   gesamte Footer-Inhalt weiß, wie es der Design-System-Hinweis zum Footer-Link vorsieht.
 - Rettungsschwimmabzeichen: "und ist für das Erkennen" ist zu "und sind für das Erkennen" korrigiert.
 - "Mitarbeitende" heißt im Code "Mitarbeiter" (Kennzahlen, Ausbildereignung). Auf der Website wird nicht gegendert.
-- Der Bildstreifen "Momente, die bewegen" läuft als endloses Laufband (`MomenteLaufband.astro`) mit allen
-  18 Fotos aus Figma. Er hält beim Überfahren mit der Maus, bei Tastaturfokus und beim Antippen an und steht
-  still, wenn im System "Bewegung reduzieren" eingestellt ist. Die Anzeige darunter folgt dem Durchlauf.
-- Die Partnerlogos beginnen links bündig statt angeschnitten. Die Logo-Reihe lässt sich seitlich scrollen,
-  die Anzeige darunter folgt der Position.
+- Bildstreifen "Momente, die bewegen" (alle 18 Fotos aus Figma) und Partnerlogos laufen als endlose
+  Laufbänder (`src/components/Laufband.astro`). Beim Start entsprechen sie dem Entwurf, beide mit rund
+  40 px pro Sekunde. Sie halten beim Überfahren mit der Maus, bei Tastaturfokus und beim Antippen an und
+  stehen still, wenn im System "Bewegung reduzieren" eingestellt ist. Die Anzeige darunter folgt dem
+  Durchlauf, ein Klick springt an die Stelle.
 - Roboto wird selbst ausgeliefert (`@fontsource/roboto`) statt von Google Fonts geladen.

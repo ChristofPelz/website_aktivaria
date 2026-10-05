@@ -1,0 +1,73 @@
+---
+// Endloses Laufband. Der Inhalt (Slot) ist genau eine Periode breit und wird für
+// den nahtlosen Übergang ein zweites Mal ausgegeben (für Screenreader verborgen).
+// Maße im Inhalt in "Figma-px" über calc(n * var(--u)): bis 1920 px Fensterbreite
+// wird alles mitskaliert, auf dem Smartphone nicht kleiner als 55 %.
+// Hält beim Überfahren, bei Tastaturfokus und beim Antippen an, steht still bei
+// "Bewegung reduzieren". Die Positionsanzeige (SliderIndicator) folgt über data-slider.
+interface Props {
+  id: string;
+  label: string;
+  /** Dauer eines Durchlaufs in Sekunden */
+  duration: number;
+  /** Versatz des Anfangs nach links in Figma-px, damit der Start dem Entwurf entspricht */
+  start?: number;
+  class?: string;
+}
+
+const { id, label, duration, start = 0, class: className = "" } = Astro.props;
+const content = await Astro.slots.render("default");
+---
+
+<div
+  class:list={["laufband relative cursor-pointer overflow-hidden", className]}
+  data-slider={id}
+  data-marquee
+  role="region"
+  aria-label={`${label}, läuft automatisch, Antippen hält an`}
+  style={`--laufband-dauer:${duration}s`}
+>
+  <div class="laufband-track flex w-max" style={`margin-left:calc(${-start} * var(--u))`}>
+    <div class="flex shrink-0" set:html={content} />
+    <div class="flex shrink-0" aria-hidden="true" set:html={content} />
+  </div>
+</div>
+
+<style>
+  .laufband {
+    --u: clamp(0.55px, calc(100vw / 1920), 1px);
+  }
+
+  .laufband-track {
+    animation: laufband var(--laufband-dauer) linear infinite;
+  }
+
+  .laufband:hover .laufband-track,
+  .laufband:focus-within .laufband-track,
+  .laufband.is-paused .laufband-track {
+    animation-play-state: paused;
+  }
+
+  @keyframes laufband {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .laufband {
+      overflow-x: auto;
+      cursor: auto;
+    }
+
+    .laufband-track {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>(".laufband").forEach((band) => {
+    band.addEventListener("click", () => band.classList.toggle("is-paused"));
+  });
+</script>

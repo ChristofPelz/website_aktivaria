@@ -1,8 +1,11 @@
 ---
 import Button from "../Button.astro";
+import Laufband from "../Laufband.astro";
 import SliderIndicator from "../SliderIndicator.astro";
 
-// "05 Vertrauen & Partnerlogos". Logogrößen wie in Figma, Abstand 40 px.
+// "05 Vertrauen & Partnerlogos". Logogrößen wie in Figma, Abstand 40 px, als Laufband.
+// Eine Periode: Summe der Logobreiten plus neun Abstände. Der erste Logo-Anfang liegt in
+// Figma 28,81 px links vom Bildrand.
 const stats = [
   { value: "100+", label: "durchgeführte Gesundheitsmaßnahmen" },
   { value: "XX", label: "Unternehmen betreut" },
@@ -47,24 +50,25 @@ const partners = [
       </dl>
     </div>
 
-    <div class="scrollbar-none mt-16 overflow-x-auto xl:mt-[159px]" data-slider="partner">
-      <ul class="mx-auto flex h-[121px] w-max items-center gap-10 px-5 md:px-10 xl:px-0">
+    <Laufband id="partner" label="Partner von aktiVaria" duration={50} start={28.81} class="mt-16 xl:mt-[159px]">
+      <ul class="flex items-center" style="height:calc(121 * var(--u))">
         {
           partners.map((p) => (
-            <li class="shrink-0">
+            <li class="shrink-0" style="padding-right:calc(40 * var(--u))">
               <img
                 src={`/images/home/${p.src}`}
                 alt={p.name}
                 width={p.w}
                 height={p.h}
-                loading="lazy"
-                style={`width:${p.w}px;height:${p.h}px`}
+                decoding="async"
+                class="max-w-none"
+                style={`width:calc(${p.w} * var(--u));height:calc(${p.h} * var(--u))`}
               />
             </li>
           ))
         }
       </ul>
-    </div>
+    </Laufband>
 
     <SliderIndicator target="partner" label="Partnerlogos" class="mt-4 xl:mt-[11px]" />
 
