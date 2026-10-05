@@ -1,0 +1,79 @@
+---
+import Button from "../Button.astro";
+import Laufband from "../Laufband.astro";
+import SliderIndicator from "../SliderIndicator.astro";
+
+// "05 Vertrauen & Partnerlogos". Logogrößen wie in Figma, Abstand 40 px, als Laufband.
+// Eine Periode: Summe der Logobreiten plus neun Abstände. Der erste Logo-Anfang liegt in
+// Figma 28,81 px links vom Bildrand.
+const stats = [
+  { value: "100+", label: "durchgeführte Gesundheitsmaßnahmen" },
+  { value: "XX", label: "Unternehmen betreut" },
+  { value: "X.XXX", label: "erreichte Mitarbeiter" },
+  { value: "10+ Jahre", label: "Erfahrung" },
+];
+
+const partners = [
+  { name: "AOK", src: "partner-iok.svg", w: 165, h: 51.21 },
+  { name: "BARMER", src: "partner-barmer.png", w: 159, h: 51 },
+  { name: "MDCC", src: "partner-mdcc.svg", w: 142.76, h: 49.81 },
+  { name: "DHL", src: "partner-dhl.png", w: 194, h: 43 },
+  { name: "DECATHLON", src: "partner-decathlon.png", w: 216, h: 121 },
+  { name: "Europaschule Gymnasium Gommern", src: "partner-europaschule-gommern.png", w: 186, h: 61 },
+  { name: "JOHANNITER", src: "partner-johanniter.svg", w: 256.2, h: 56.74 },
+  { name: "WOBAU", src: "partner-wobau.png", w: 256, h: 50 },
+  { name: "MWG", src: "partner-mw.svg", w: 79.63, h: 74.44 },
+];
+---
+
+<section class="relative">
+  <div class="relative pt-20 pb-20 xl:pt-[220px] xl:pb-[204px]">
+    <div class="mx-auto max-w-[1640px] px-5 md:px-10">
+      <div class="mx-auto max-w-[1278px] text-center">
+        <h2 class="text-lead font-medium xl:text-h3">Vertrauen entsteht durch gute Erfahrungen.</h2>
+        <p class="mt-4 text-body xl:mt-[26px] xl:text-body-lg">
+          Familien, Einrichtungen und Unternehmen vertrauen auf die persönliche Betreuung und die
+          vielseitigen Angebote von aktiVaria. Gemeinsam mit unseren Partnern schaffen wir nachhaltige
+          Gesundheits- und Bewegungserlebnisse in Magdeburg und darüber hinaus.
+        </p>
+      </div>
+
+      <dl class="mx-auto mt-12 grid grid-cols-2 gap-x-6 gap-y-8 text-body break-words hyphens-auto text-black md:flex md:w-fit md:gap-x-16 md:whitespace-nowrap xl:mt-[110px] 2xl:gap-x-[153px]">
+        {
+          stats.map((s) => (
+            <div class="flex flex-col-reverse">
+              <dt>{s.label}</dt>
+              <dd>{s.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+
+    <Laufband id="partner" label="Partner von aktiVaria" duration={50} start={28.81} class="mt-16 xl:mt-[159px]">
+      <ul class="flex items-center" style="height:calc(121 * var(--u))">
+        {
+          partners.map((p) => (
+            <li class="shrink-0" style="padding-right:calc(40 * var(--u))">
+              <img
+                src={`/images/home/${p.src}`}
+                alt={p.name}
+                width={p.w}
+                height={p.h}
+                decoding="async"
+                class="max-w-none"
+                style={`width:calc(${p.w} * var(--u));height:calc(${p.h} * var(--u))`}
+              />
+            </li>
+          ))
+        }
+      </ul>
+    </Laufband>
+
+    <SliderIndicator target="partner" label="Partnerlogos" class="mt-4 xl:mt-[11px]" />
+
+    <div class="px-5 pt-10 text-center md:px-10 xl:pt-[42px]">
+      <Button href="/team" class="w-full md:w-[367px]">aktiVaria kennenlernen</Button>
+    </div>
+  </div>
+</section>

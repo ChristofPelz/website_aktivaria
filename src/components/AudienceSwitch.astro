@@ -1,0 +1,22 @@
+---
+// Umschalter Geschäftskunden / Familien & Kinder (Design System "Chip").
+// Der farbige Chip führt zur anderen Zielgruppe, daneben steht die aktuelle.
+interface Props {
+  switchTo: { label: string; href: string };
+  current: string;
+}
+
+const { switchTo, current } = Astro.props;
+---
+
+<div class="flex h-[38px] w-[276px] items-center rounded-full bg-white pr-1.5 shadow-card">
+  <a
+    href={switchTo.href}
+    class="flex h-[38px] w-[143px] shrink-0 items-center justify-center rounded-[19px] bg-brand-teal-700 px-5 text-small font-medium whitespace-nowrap text-white transition-colors hover:bg-brand-teal-800 focus-visible:shadow-[var(--shadow-focus)] focus-visible:outline-none"
+  >
+    {switchTo.label}
+  </a>
+  <span class="ml-1 text-small font-medium whitespace-nowrap text-black [text-shadow:0_3px_3px_rgb(0_0_0/0.16)]">
+    {current}
+  </span>
+</div>

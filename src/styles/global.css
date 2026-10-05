@@ -1,27 +1,74 @@
 @import "tailwindcss";
 
+/* Tokens aus der Figma-Sammlung "aktiVaria Tokens" (Seite "Design System").
+   Aus color/brand/blue-700 wird --color-brand-blue-700, wie es die Notiz
+   "Token → Code" im Design System vorgibt. */
 @theme {
   --font-sans: "Roboto", ui-sans-serif, system-ui, sans-serif;
 
-  --color-brand-blue: #1b3f86;
-  --color-brand-blue-dark: #12294f;
-  --color-brand-navy: #0d1b3a;
-  --color-brand-sky: #eef3fb;
-  --color-brand-logo-accent: #092972;
+  /* Ab 3xl (1720 px) reicht die Breite für die Seitenränder aus Figma (140 px), ab 4xl
+     für Hero-Zeile und Wertekarten nebeneinander wie im 1920er-Entwurf. */
+  --breakpoint-3xl: 107.5rem;
+  --breakpoint-4xl: 114.375rem;
 
-  /* Sampled directly from the Figma file's actual fills (aktiVaria Colors
-     variable collection) — not approximated. */
-  --color-category-bewegungsschule: #edd515;
-  --color-category-schwimmschule: #7bd1ed;
-  --color-category-kinderbetreuung: #e3a6ba;
-  --color-category-bgf: #007f8f;
-  --color-category-ernaehrung: #df9157;
+  --color-brand-blue-900: #092972;
+  --color-brand-blue-700: #1b3f86;
+  --color-brand-teal-800: #006d7d;
+  --color-brand-teal-700: #007f8f;
+  --color-brand-indigo-700: #343176;
 
-  --color-accent-lime: #afcb05;
-  --color-accent-crimson: #eb003c;
-  --color-accent-blue: #004288;
-  --color-accent-orange: #f07c00;
-  --color-neutral-dark: #2e2e2d;
+  --color-accent-yellow: #edd515;
+  --color-accent-sky: #7bd1ed;
+  --color-accent-orange: #df9157;
+  --color-accent-orange-700: #b26a2e;
+  --color-accent-rose: #e3a6ba;
+
+  --color-neutral-900: #2e2e2d;
+  --color-neutral-800: #464749;
+  --color-neutral-600: #7f8284;
+  --color-neutral-500: #8e8e8e;
+  --color-neutral-400: #b1acac;
+  --color-neutral-300: #c9ced1;
+  --color-neutral-200: #e2e2e2;
+
+  --color-surface-tint-blue: #f1f7fc;
+  --color-surface-tint-green: #f3faed;
+  --color-surface-tint-warm: #fff8e9;
+  --color-surface-tint-rose: #fff2ef;
+
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 20px;
+  --radius-lg: 32px;
+  --radius-xl: 40px;
+  --radius-2xl: 60px;
+  --radius-3xl: 72px;
+
+  /* Textstile: Rolle im Namen, Gewicht über font-medium/font-bold. */
+  --text-caption: 12px;
+  --text-caption--line-height: 16px;
+  --text-small: 14px;
+  --text-small--line-height: 19px;
+  --text-body-sm: 16px;
+  --text-body-sm--line-height: 21px;
+  --text-body: 18px;
+  --text-body--line-height: 24px;
+  --text-body-lg: 20px;
+  --text-body-lg--line-height: 26px;
+  --text-lead: 26px;
+  --text-lead--line-height: 34px;
+  --text-h4: 32px;
+  --text-h4--line-height: 42px;
+  --text-h3: 38px;
+  --text-h3--line-height: 49px;
+  --text-h2: 48px;
+  --text-h2--line-height: 62px;
+  --text-h1: 60px;
+  --text-h1--line-height: 78px;
+
+  --shadow-card: 0 3px 3px rgba(0, 0, 0, 0.16);
+  --shadow-card-hover: 0 8px 12px rgba(0, 0, 0, 0.22);
+  --shadow-focus: 0 0 0 3px var(--color-brand-blue-900);
 }
 
 html {
@@ -30,5 +77,57 @@ html {
 
 body {
   font-family: var(--font-sans);
-  color: var(--color-brand-blue);
+  color: var(--color-brand-blue-700);
+  background: #fff;
+}
+
+/* Verlauf aus art/hero-3 und art/kategorien-gesundheit-un-1 (Multiplizieren).
+   Die Stopps sind auf die CSS-Verlaufslinie umgerechnet. */
+.gradient-hero {
+  background: linear-gradient(
+    269deg,
+    rgb(255 255 255 / 0.44) -0.3%,
+    rgb(0 167 255 / 0.44) 49%,
+    rgb(26 70 157 / 0.7) 75.6%,
+    #1b3f86 98.3%
+  );
+}
+
+.gradient-kategorien {
+  background: linear-gradient(
+    269.2deg,
+    rgb(255 255 255 / 0.44) 0.5%,
+    rgb(0 167 255 / 0.44) 49%,
+    rgb(26 70 157 / 0.7) 75.2%,
+    #1b3f86 97.5%
+  );
+}
+
+/* art/footer-1 und art/footer-8, beide multipliziert übereinander. */
+.gradient-footer-1 {
+  background: linear-gradient(
+    269.2deg,
+    #1b3f86 -1%,
+    rgb(26 70 157 / 0.5) 38.4%,
+    rgb(27 67 146 / 0.5) 55%,
+    #1b3f86 97.8%
+  );
+}
+
+.gradient-footer-2 {
+  background: linear-gradient(
+    268.6deg,
+    #1b3f86 0.5%,
+    rgb(26 70 157 / 0.5) 39.8%,
+    rgb(27 67 146 / 0.5) 56.3%,
+    #1b3f86 98.9%
+  );
+}
+
+.scrollbar-none {
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
 }

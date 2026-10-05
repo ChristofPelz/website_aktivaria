@@ -1,0 +1,100 @@
+---
+import Button from "../Button.astro";
+import SliderIndicator from "../SliderIndicator.astro";
+import MomenteLaufband from "./MomenteLaufband.astro";
+
+// "04 Was uns bewegt + Momente". Die Karten stehen ab 1830 px im Zickzack:
+// oben Überschrift zuerst, unten (+54 px) Text zuerst und Überschrift am Fuß.
+const values = [
+  {
+    title: "PERSÖNLICH",
+    text: "Wir hören zu und entwickeln Angebote, die wirklich zu den Menschen und ihren Bedürfnissen passen.",
+    color: "var(--color-accent-sky)",
+  },
+  {
+    title: "PROFESSIONELL",
+    text: "Qualifizierte Fachkräfte, durchdachte Konzepte und langjährige Erfahrung bilden die Grundlage unserer Arbeit.",
+    color: "var(--color-accent-yellow)",
+  },
+  {
+    title: "KINDGERECHT",
+    text: "Kinder dürfen bei uns entdecken, ausprobieren, lernen und in ihrem eigenen Tempo wachsen.",
+    color: "var(--color-accent-rose)",
+  },
+  {
+    title: "INDIVIDUELL",
+    text: "Von regelmäßigen Kursen bis zu maßgeschneiderten Unternehmenslösungen gestalten wir unsere Angebote flexibel.",
+    color: "var(--color-brand-teal-700)",
+  },
+  {
+    title: "MIT HERZ",
+    text: "Wir möchten positive Erfahrungen schaffen, die in Erinnerung bleiben.",
+    color: "var(--color-accent-orange)",
+  },
+];
+---
+
+<section class="relative overflow-hidden">
+  <img
+    src="/images/home/was-uns-bewegt-wave.webp"
+    alt=""
+    aria-hidden="true"
+    width="1920"
+    height="1382"
+    class="absolute top-0 left-0 h-auto w-full max-w-none mix-blend-multiply"
+  />
+
+  <div class="relative">
+    <div class="mx-auto max-w-[1640px] px-5 pt-16 md:px-10 xl:pt-[178px]">
+      <div class="mx-auto max-w-[1278px] text-center">
+        <h2 class="text-lead font-medium xl:text-h3">Was uns bewegt</h2>
+        <p class="mt-4 text-body xl:mt-[26px] xl:text-body-lg">
+          Wir glauben, dass nachhaltige Entwicklung dort beginnt, wo Menschen sich gesehen, sicher und
+          motiviert fühlen. Deshalb verbinden wir Fachkompetenz mit persönlicher Nähe und echter Freude an
+          dem, was wir tun.
+        </p>
+      </div>
+
+      <ul
+        class="mx-auto mt-12 flex max-w-[1049px] flex-wrap items-start justify-center gap-6 xl:mt-[89px] xl:gap-[31px] 4xl:max-w-none 4xl:flex-nowrap"
+      >
+        {
+          values.map((v, i) => {
+            const low = i % 2 === 1;
+            return (
+              <li
+                class:list={[
+                  "flex h-[255px] w-full shrink-0 flex-col rounded-2xl px-[30px] shadow-card md:w-[329px]",
+                  low ? "justify-end gap-[14px] pb-[37px] 4xl:mt-[54px]" : "gap-[17px] pt-[52px]",
+                ]}
+                style={`background-color:${v.color}`}
+              >
+                <h3 class:list={["pl-0.5 text-h4 font-bold text-white", low && "order-2"]}>{v.title}</h3>
+                <p class="text-center text-body-lg">{v.text}</p>
+              </li>
+            );
+          })
+        }
+      </ul>
+
+      <div class="mx-auto mt-24 max-w-[1278px] text-center xl:mt-[623px]">
+        <h2 class="text-lead font-medium xl:text-h3">Momente, die bewegen.</h2>
+        <p class="mt-4 text-body xl:mt-[26px] xl:text-body-lg">
+          Ein mutiger erster Sprung ins Wasser. Ein stolzes Lächeln nach einer neuen Bewegung. Ein Team,
+          das gemeinsam neue Energie findet. Genau diese kleinen und großen Momente machen unsere Arbeit
+          besonders.
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-12 xl:mt-[81px]">
+      <MomenteLaufband />
+    </div>
+
+    <SliderIndicator target="momente" label="Bildstreifen" class="mt-8 xl:mt-[52px]" />
+
+    <div class="px-5 pt-10 text-center md:px-10 xl:pt-[42px]">
+      <Button href="/team" class="w-full md:w-[367px]">Mehr über aktiVaria erfahren</Button>
+    </div>
+  </div>
+</section>

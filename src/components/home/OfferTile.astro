@@ -1,0 +1,57 @@
+---
+// Bildkachel aus "03 Kategorien": Foto mit Maske (318 x 318, Radius 60) und
+// farbiger Ellipse (618 x 403). Ab 1280 px gelten die Figma-Maße der einzelnen
+// Kachel, darunter füllt das Foto die Kachel (Design System "Karte / Angebot").
+interface Props {
+  title: string;
+  href: string;
+  image: string;
+  color: string;
+  labelColor: string;
+  /** Lage des Fotos zur Kachel in px bei 318 px Kachelbreite */
+  photo: { x: number; y: number; w: number; h: number };
+  /** linke obere Ecke der Ellipse in px */
+  ellipse: { x: number; y: number };
+  /** Lage des Labels in px bei 318 px Kachelbreite */
+  label: { x: number; y: number };
+  /** Versatz der Kachel nach unten ab 1280 px (Kinderbetreuung sitzt in Figma 8 px tiefer) */
+  shiftY?: number;
+}
+
+const { title, href, image, color, labelColor, photo, ellipse, label, shiftY = 0 } = Astro.props;
+
+const vars = [
+  `--px:${photo.x}px`,
+  `--py:${photo.y}px`,
+  `--pw:${photo.w}px`,
+  `--ph:${photo.h}px`,
+  `--lx:${label.x}px`,
+  `--ly:${label.y}px`,
+  `--sy:${shiftY}px`,
+].join(";");
+---
+
+<a
+  href={href}
+  class="group relative block h-[318px] overflow-hidden rounded-2xl focus-visible:shadow-[var(--shadow-focus)] focus-visible:outline-none xl:top-(--sy) xl:w-[318px]"
+  style={vars}
+>
+  <img
+    src={image}
+    alt=""
+    loading="lazy"
+    class="absolute inset-0 h-full w-full max-w-none object-cover xl:inset-auto xl:top-(--py) xl:left-(--px) xl:h-(--ph) xl:w-(--pw)"
+  />
+  <span
+    aria-hidden="true"
+    class="absolute h-[403px] w-[618px] rounded-[50%]"
+    style={`left:${ellipse.x}px;top:${ellipse.y}px;background:${color}`}
+  >
+  </span>
+  <span
+    class="absolute bottom-9 left-8 max-w-[261px] text-body-lg font-bold xl:top-(--ly) xl:bottom-auto xl:left-(--lx)"
+    style={`color:${labelColor}`}
+  >
+    {title}
+  </span>
+</a>

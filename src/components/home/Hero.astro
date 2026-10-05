@@ -1,0 +1,54 @@
+---
+import Button from "../Button.astro";
+
+// "02 Hero": Foto (img/hero-2) mit multipliziertem Verlauf (art/hero-3).
+// Ab 1280 px liegt die Kopfzeile darüber, darunter gilt die Tablet-/Mobilfassung.
+const headline = ["Gesundheit, Bewegung und gemeinsame Erlebnisse", "Für Kinder, Familien und Unternehmen."];
+const intro =
+  "Mit vielseitigen Angeboten begleiten wir Kinder, Familien und Unternehmen auf dem Weg zu mehr Bewegung, Gesundheit und Lebensfreude.";
+const actions = [
+  { label: "Angebote für Familien entdecken", href: "/bewegungsschule" },
+  { label: "Lösungen für Unternehmen", href: "/unternehmen" },
+];
+---
+
+<section class="relative isolate overflow-hidden bg-brand-blue-900 text-white">
+  <!-- Tablet und Mobil -->
+  <div class="flex flex-col gap-6 px-5 pt-10 pb-12 md:px-10 xl:hidden">
+    <div class="relative isolate aspect-video overflow-hidden rounded-md">
+      <img src="/images/home/hero.png" alt="" width="1280" height="720" class="h-full w-full object-cover" />
+      <div class="gradient-hero absolute inset-0 mix-blend-multiply"></div>
+    </div>
+    <h1 class="text-h4 font-bold md:text-h3">
+      {headline.map((line) => <span class="block">{line}</span>)}
+    </h1>
+    <p class="text-body">{intro}</p>
+    <div class="flex flex-col gap-6">
+      {actions.map((a) => <Button href={a.href} class="w-full">{a.label}</Button>)}
+    </div>
+  </div>
+
+  <!-- Desktop -->
+  <div class="hidden min-h-[max(56.25vw,900px)] flex-col justify-end pt-[200px] pb-[120px] xl:flex">
+    <img
+      src="/images/home/hero.png"
+      alt=""
+      width="1280"
+      height="720"
+      class="absolute inset-0 -z-10 h-full w-full object-cover"
+    />
+    <div class="gradient-hero absolute inset-0 -z-10 mix-blend-multiply"></div>
+
+    <div class="mx-auto w-full max-w-[1920px] px-10 4xl:pr-[193px] 4xl:pl-[176px]">
+      <div class="flex flex-wrap items-start justify-between gap-x-12 gap-y-10">
+        <h1 class="max-w-[1052px] text-h1 font-bold">
+          {headline.map((line) => <span class="block">{line}</span>)}
+        </h1>
+        <div class="flex w-[367px] flex-col gap-5 2xl:mt-[25px]">
+          {actions.map((a) => <Button href={a.href} class="w-full">{a.label}</Button>)}
+        </div>
+      </div>
+      <p class="mx-auto mt-[79px] max-w-[1278px] text-center text-h4">{intro}</p>
+    </div>
+  </div>
+</section>

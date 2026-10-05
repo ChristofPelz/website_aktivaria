@@ -1,15 +1,19 @@
 ---
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import "@fontsource/roboto/latin-400.css";
+import "@fontsource/roboto/latin-500.css";
+import "@fontsource/roboto/latin-700.css";
 import "../styles/global.css";
 
 interface Props {
   title: string;
   description: string;
   audience?: "familie" | "unternehmen";
+  headerTheme?: "onDark" | "onLight";
 }
 
-const { title, description, audience = "familie" } = Astro.props;
+const { title, description, audience = "familie", headerTheme = "onLight" } = Astro.props;
 ---
 
 <html lang="de">
@@ -19,16 +23,10 @@ const { title, description, audience = "familie" } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
-      rel="stylesheet"
-    />
     <title>{title} · aktiVaria</title>
   </head>
-  <body class="text-brand-blue">
-    <Header audience={audience} />
+  <body class="text-brand-blue-700">
+    <Header audience={audience} theme={headerTheme} />
     <main>
       <slot />
     </main>

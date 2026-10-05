@@ -1,0 +1,75 @@
+---
+import Laufband from "../Laufband.astro";
+
+// Bildstreifen "Momente, die bewegen". Lage und Größe der 18 Fotos stammen aus der
+// Gruppe img/was-uns-bewegt-momente-4 in Figma (px bei 1920 px Breite, gemessen ab dem
+// ersten Foto). Der Streifen wiederholt sich nach PERIOD px. Die Fotos laden nicht
+// verzögert: im beschnittenen Streifen würde "lazy" sie erst beim Hereinlaufen holen.
+const PERIOD = 4836.7;
+const HEIGHT = 489;
+// Erstes Foto beginnt in Figma 119,41 px links vom Bildrand.
+const START = 119.41;
+
+const photos = [
+  { src: "moment-01.webp", x: 0, y: 9.15, w: 254.15, h: 435.45, alt: "Kinder mit Schwimmflügeln am Beckenrand" },
+  { src: "moment-02.webp", x: 207.15, y: 0.62, w: 388.92, h: 444.6, alt: "Unterwasseraufnahme: Eine Trainerin hält ein Kind beim Schwimmenlernen" },
+  { src: "moment-03.webp", x: 579.03, y: 59.86, w: 267.55, h: 341.17, alt: "Kind schwimmt in Rückenlage im Becken" },
+  { src: "moment-04.webp", x: 815.75, y: 33.08, w: 247.67, h: 369.79, alt: "Kinder mit Turnbeuteln jubeln gemeinsam mit ihren Trainern" },
+  { src: "moment-05.webp", x: 1043.76, y: 7.03, w: 290.6, h: 404.75, alt: "Kind sitzt auf einem bunten Schwungtuch voller Bälle" },
+  { src: "moment-06.webp", x: 1323.79, y: 30.11, w: 263.46, h: 380.34, alt: "Trainer macht mit Kindern Übungen in der Schwimmhalle" },
+  { src: "moment-07.webp", x: 1583, y: 63.55, w: 364.91, h: 357.73, alt: "Kinder fassen sich im Kreis an den Händen" },
+  { src: "moment-08.webp", x: 1894.51, y: 0, w: 256.36, h: 393.64, alt: "Viele Kinderhände liegen übereinander" },
+  { src: "moment-09.webp", x: 2079.63, y: 78.23, w: 352.21, h: 373.82, alt: "Kinder spielen und basteln auf einer Decke im Park" },
+  { src: "moment-10.webp", x: 2423.72, y: 44.38, w: 248.79, h: 435.45, alt: "Kinder bemalen große Ballons im Freien" },
+  { src: "moment-11.webp", x: 2625.5, y: 43.75, w: 388.92, h: 444.6, alt: "Trainer und Junge beim Fußballtraining mit Hütchen" },
+  { src: "moment-12.webp", x: 2997.39, y: 87.96, w: 267.55, h: 341.17, alt: "Gruppe beim Gleichgewichtstraining in der Sporthalle" },
+  { src: "moment-13.webp", x: 3234.12, y: 86.12, w: 247.67, h: 369.79, alt: "Trainerin legt einer Teilnehmerin eine Atemmaske für einen Test an" },
+  { src: "moment-14.webp", x: 3462.11, y: 77.21, w: 290.6, h: 404.75, alt: "Teilnehmer trainieren mit Fitnessbändern auf Matten" },
+  { src: "moment-15.webp", x: 3742.14, y: 78.54, w: 263.46, h: 380.34, alt: "Trainer berät eine Teilnehmerin am Tisch" },
+  { src: "moment-16.webp", x: 4001.35, y: 67.7, w: 364.91, h: 357.73, alt: "Gesundes Buffet mit Dips und Gemüsesticks" },
+  { src: "moment-17.webp", x: 4312.85, y: 95.36, w: 256.36, h: 393.64, alt: "Gläser mit Nüssen und Kernen" },
+  { src: "moment-18.webp", x: 4498, y: 36.94, w: 352.21, h: 373.82, alt: "Trainerin zeigt einer Gruppe die Zubereitung eines Smoothies" },
+];
+
+// Zierblasen aus icon/was-uns-bewegt-momente-5 bis -10, im selben Bezugssystem.
+const bubbles = [
+  { src: "bubbles-2.svg", x: 201.58, y: 48.36, w: 53.83 },
+  { src: "bubbles-4.svg", x: 567.62, y: 370.02, w: 137.48 },
+  { src: "bubbles-6.svg", x: 919.95, y: 74.94, w: 60.13 },
+  { src: "bubbles-1.svg", x: 1230.86, y: 36.41, w: 79 },
+  { src: "bubbles-5.svg", x: 1503.41, y: 369.41, w: 58.15 },
+  { src: "bubbles-3.svg", x: 1786.46, y: 62.59, w: 65.44 },
+];
+
+const u = (v: number) => `calc(${v} * var(--u))`;
+---
+
+<Laufband id="momente" label="Momentaufnahmen aus den Angeboten von aktiVaria" duration={120} start={START}>
+  <div class="relative" style={`width:${u(PERIOD)};height:${u(HEIGHT)}`}>
+    {
+      photos.map((p) => (
+        <img
+          src={`/images/home/momente/${p.src}`}
+          alt={p.alt}
+          decoding="async"
+          fetchpriority="low"
+          width={Math.round(p.w)}
+          height={Math.round(p.h)}
+          class="absolute max-w-none"
+          style={`left:${u(p.x)};top:${u(p.y)};width:${u(p.w)};height:${u(p.h)}`}
+        />
+      ))
+    }
+    {
+      bubbles.map((b) => (
+        <img
+          src={`/images/decor/${b.src}`}
+          alt=""
+          aria-hidden="true"
+          class="pointer-events-none absolute h-auto max-w-none"
+          style={`left:${u(b.x)};top:${u(b.y)};width:${u(b.w)}`}
+        />
+      ))
+    }
+  </div>
+</Laufband>

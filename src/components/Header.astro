@@ -1,9 +1,15 @@
 ---
+import AudienceSwitch from "./AudienceSwitch.astro";
+
+// Kopfzeile nach dem Figma-Rahmen "01 Navigation". theme="onDark" liegt über dem
+// Hero der Startseite (Nav-Item OnDark), theme="onLight" steht auf hellen Seiten.
+// Unter 1280 px greift die Tablet-/Mobilfassung mit Menüknopf (44 x 44).
 interface Props {
   audience?: "familie" | "unternehmen";
+  theme?: "onDark" | "onLight";
 }
 
-const { audience = "familie" } = Astro.props;
+const { audience = "familie", theme = "onLight" } = Astro.props;
 
 const familieNav = [
   { label: "Bewegung", href: "/bewegungsschule" },
@@ -22,48 +28,137 @@ const unternehmenNav = [
 ];
 
 const nav = audience === "unternehmen" ? unternehmenNav : familieNav;
+const switchTo =
+  audience === "unternehmen"
+    ? { label: "Familien & Kinder", href: "/" }
+    : { label: "Geschäftskunden", href: "/unternehmen" };
+const current = audience === "unternehmen" ? "Geschäftskunden" : "Familien & Kinder";
+
+const path = Astro.url.pathname.replace(/\/$/, "");
+const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
+
+const onDark = theme === "onDark";
+
+const navItemBase =
+  "relative block px-1 py-2 font-medium transition-colors after:absolute after:bottom-0 after:left-1/2 after:h-0.5 after:w-10 after:-translate-x-1/2 after:opacity-0 focus-visible:shadow-[var(--shadow-focus)] focus-visible:outline-none";
+const navItemTheme = onDark
+  ? "text-white after:bg-accent-sky hover:text-accent-sky hover:after:opacity-100 aria-[current=page]:after:bg-white aria-[current=page]:after:opacity-100 aria-[current=page]:hover:text-white"
+  : "text-brand-blue-700 after:bg-brand-blue-900 hover:text-brand-blue-900 hover:after:opacity-100 aria-[current=page]:text-brand-blue-900 aria-[current=page]:after:opacity-100";
 ---
 
-<header class="sticky top-0 z-50 bg-white shadow-sm">
-  <div class="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-3">
+<header
+  class:list={[
+    "relative z-30",
+    onDark ? "xl:absolute xl:inset-x-0 xl:top-0" : "bg-white xl:shadow-card",
+  ]}
+>
+  <!-- Tablet und Mobil -->
+  <div class="flex items-center justify-between bg-white px-5 py-4 md:px-10 xl:hidden">
     <a href="/" class="shrink-0">
-      <img src="/images/logo-mark.svg" alt="aktiVaria" class="h-9 w-auto" />
+      <img src="/images/logo-mark.svg" alt="aktiVaria" width="173" height="65" class="h-11 w-auto" />
     </a>
-
-    <nav class="hidden items-center gap-6 text-sm font-medium md:flex">
-      {
-        nav.map((item) => (
-          <a href={item.href} class="text-brand-blue hover:text-brand-blue/70">
-            {item.label}
-          </a>
-        ))
-      }
-    </nav>
-
-    <div class="flex items-center gap-3 rounded-full bg-white p-1 text-sm font-medium shadow-[0_3px_6px_rgba(0,0,0,0.16)]">
-      {
-        audience === "unternehmen" ? (
-          <>
-            <a
-              href="/"
-              class="rounded-full bg-category-bgf px-4 py-2 font-medium text-white transition hover:opacity-90"
-            >
-              Familien &amp; Kinder
-            </a>
-            <span class="pr-3 text-brand-blue">Geschäftskunden</span>
-          </>
-        ) : (
-          <>
-            <a
-              href="/unternehmen"
-              class="rounded-full bg-category-bgf px-4 py-2 font-medium text-white transition hover:opacity-90"
-            >
-              Geschäftskunden
-            </a>
-            <span class="pr-3 text-brand-blue">Familien &amp; Kinder</span>
-          </>
-        )
-      }
-    </div>
+    <button
+      type="button"
+      class="grid size-11 place-items-center rounded-sm bg-brand-blue-700 text-white focus-visible:shadow-[var(--shadow-focus)] focus-visible:outline-none"
+      aria-expanded="false"
+      aria-controls="mobile-nav"
+      data-menu-toggle
+    >
+      <svg width="22" height="16" viewBox="0 0 22 16" fill="none" aria-hidden="true">
+        <path d="M1 1h20M1 8h20M1 15h20" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </svg>
+      <span class="sr-only">Menü</span>
+    </button>
   </div>
+
+  <div id="mobile-nav" class="hidden border-t border-neutral-200 bg-white px-5 pb-6 md:px-10 xl:hidden" data-menu-panel>
+    <nav aria-label="Hauptnavigation">
+      <ul class="py-2">
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isActive(item.href) ? "page" : undefined}
+                class="block py-3 text-body-lg font-medium text-brand-blue-700 hover:text-brand-blue-900 aria-[current=page]:text-brand-blue-900"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <a
+      href={switchTo.href}
+      class="inline-flex rounded-full bg-brand-blue-700 px-5 py-2.5 text-small font-medium text-white hover:bg-brand-blue-900"
+    >
+      Zu {switchTo.label}
+    </a>
+  </div>
+
+  <!-- Desktop -->
+  {
+    onDark ? (
+      <div class="hidden xl:block">
+        <div class="pointer-events-none absolute -top-[548px] -left-[58px] h-[711px] w-[710px] rounded-full bg-white shadow-card" />
+        <a href="/" class="absolute top-[53px] left-[199px]">
+          <img src="/images/logo-mark.svg" alt="aktiVaria" width="173" height="65" class="h-[65px] w-[173px]" />
+        </a>
+        <nav
+          aria-label="Hauptnavigation"
+          class="absolute top-[111px] left-[max(470px,calc(50%-351px))]"
+        >
+          <ul class="flex items-center gap-6 text-[22px] leading-[34px] 2xl:gap-8 2xl:text-lead">
+            {nav.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  aria-current={isActive(item.href) ? "page" : undefined}
+                  class:list={[navItemBase, navItemTheme]}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <div class="absolute top-[53px] right-[113px]">
+          <AudienceSwitch switchTo={switchTo} current={current} />
+        </div>
+      </div>
+    ) : (
+      <div class="mx-auto hidden max-w-[1640px] items-center justify-between gap-8 px-10 py-5 xl:flex">
+        <a href="/" class="shrink-0">
+          <img src="/images/logo-mark.svg" alt="aktiVaria" width="173" height="65" class="h-[65px] w-[173px]" />
+        </a>
+        <nav aria-label="Hauptnavigation">
+          <ul class="flex items-center gap-6 text-[22px] leading-[34px] 2xl:gap-8 2xl:text-lead">
+            {nav.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  aria-current={isActive(item.href) ? "page" : undefined}
+                  class:list={[navItemBase, navItemTheme]}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <AudienceSwitch switchTo={switchTo} current={current} />
+      </div>
+    )
+  }
 </header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+  const panel = document.querySelector<HTMLElement>("[data-menu-panel]");
+  toggle?.addEventListener("click", () => {
+    const open = toggle.getAttribute("aria-expanded") === "true";
+    toggle.setAttribute("aria-expanded", String(!open));
+    panel?.classList.toggle("hidden", open);
+  });
+</script>
