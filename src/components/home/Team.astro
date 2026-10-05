@@ -1,0 +1,75 @@
+---
+import Button from "../Button.astro";
+
+// "06 Team": Foto in der Blob-Maske (816 x 933) aus Figma. Das Foto ist größer
+// als die Maske (877 x 1315) und um (-28.8 | -33.5) versetzt, daher die Prozentwerte.
+const icons = [
+  { src: "/images/icons/team-health.svg", w: 55.76, h: 49.04 },
+  { src: "/images/icons/team-checklist.svg", w: 48.56, h: 58.32 },
+  { src: "/images/icons/team-person-heart.svg", w: 50.68, h: 44.93 },
+];
+---
+
+<section class="relative">
+  <img
+    src="/images/home/texture-team.webp"
+    alt=""
+    aria-hidden="true"
+    width="1920"
+    height="343"
+    class="absolute top-0 left-0 h-auto w-full max-w-none"
+  />
+
+  <div class="relative mx-auto grid max-w-[1640px] gap-12 px-5 pt-12 pb-16 md:px-10 xl:grid-cols-[minmax(0,816fr)_824fr] xl:gap-0 xl:pt-[32px] 3xl:px-0 xl:pb-[257px]">
+    <div class="relative mx-auto w-full max-w-[816px] xl:ml-[4px]">
+      <svg width="0" height="0" class="absolute" aria-hidden="true">
+        <clipPath id="team-blob" clipPathUnits="objectBoundingBox" transform="scale(0.0012248, 0.0010715)">
+          <path
+            d="M380.566 56.4723C321.907 91.6195 268.907 137.447 215.19 180.411C136.478 243.367 49.6485 307.17 15.8592 402.132C-7.30757 467.24 -2.03883 539.153 12.2339 606.771C27.5114 679.155 53.8624 751.291 103.205 806.413C156.498 865.947 232.74 900.984 310.648 918.742C412.354 941.923 519.998 937.035 619.647 906.543C704.48 880.585 822.991 835.454 816.097 728.495C813.383 686.44 796.332 646.826 786.236 605.912C768.699 534.831 772.306 460.493 775.032 387.33C777.76 314.17 779.306 239.464 757.953 169.435C736.6 99.4035 688.263 33.6814 618.981 10.0111C567.105 -7.71153 509.403 -0.115394 457.963 18.8374C430.851 28.8286 405.209 41.7084 380.566 56.4723Z"
+          ></path>
+        </clipPath>
+      </svg>
+      <div class="relative aspect-[816.38/933.28] overflow-hidden [clip-path:url(#team-blob)]">
+        <img
+          src="/images/home/team-photo.png"
+          alt="Das aktiVaria-Team in blauen Shirts"
+          width="1316"
+          height="1973"
+          loading="lazy"
+          class="absolute top-[-3.589%] left-[-3.526%] h-auto w-[107.43%] max-w-none"
+        />
+      </div>
+      <img
+        src="/images/decor/bubbles-team-1.svg"
+        alt=""
+        aria-hidden="true"
+        class="pointer-events-none absolute top-[7.48%] left-[12.02%] h-auto w-[15.63%]"
+      />
+      <img
+        src="/images/decor/bubbles-team-2.svg"
+        alt=""
+        aria-hidden="true"
+        class="pointer-events-none absolute top-[76.12%] left-[93.44%] hidden h-auto w-[15.69%] xl:block"
+      />
+    </div>
+
+    <div class="mx-auto w-full max-w-[663px] text-center xl:pt-[327px]">
+      <h2 class="text-lead font-medium xl:text-h3">Menschen bewegen Menschen</h2>
+      <p class="mt-3 text-body xl:mt-[26px] xl:text-body-lg">DAS TEAM HINTER AKTIVARIA</p>
+      <div class="mt-6 text-body xl:mt-[43px] xl:text-body-lg">
+        <p>
+          Hinter aktiVaria steht ein engagiertes Team mit vielfältigen fachlichen Kompetenzen und einer
+          gemeinsamen Leidenschaft: Menschen zu mehr Bewegung, Gesundheit und Lebensfreude zu inspirieren.
+        </p>
+        <p>
+          Mit Erfahrung, Einfühlungsvermögen und echter Begeisterung begleiten wir Kinder, Familien und
+          Unternehmen ganz persönlich.
+        </p>
+      </div>
+      <div class="mt-9 flex items-center justify-center gap-[74px]">
+        {icons.map((i) => <img src={i.src} alt="" width={i.w} height={i.h} style={`width:${i.w}px;height:${i.h}px`} />)}
+      </div>
+      <Button href="/team" class="mt-[35px] w-full md:w-[367px]">Unser Team kennenlernen</Button>
+    </div>
+  </div>
+</section>

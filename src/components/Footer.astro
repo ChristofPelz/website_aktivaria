@@ -1,4 +1,6 @@
 ---
+// Fußzeile nach dem Figma-Rahmen "08 Footer": zwei multiplizierte Verläufe
+// (art/footer-1, art/footer-8) auf weißem Grund, darüber der Inhalt in Weiß.
 const memberships = [
   "DVGS – Deutscher Verband für Gesundheitssport und Sporttherapie e.V.",
   "DRK Wasserwacht – Wasserwacht Sachsen-Anhalt",
@@ -26,61 +28,77 @@ const columns = [
   ],
 ];
 
+// Breite, Höhe und Abstand zum Vorgänger wie in Figma (icon/footer-3 bis -7).
 const social = [
-  { label: "Facebook", href: "https://facebook.com", icon: "/images/icons/social-facebook.svg" },
-  { label: "Instagram", href: "https://instagram.com", icon: "/images/icons/social-instagram.svg" },
-  { label: "LinkedIn", href: "https://linkedin.com", icon: "/images/icons/social-linkedin.svg" },
-  { label: "YouTube", href: "https://youtube.com", icon: "/images/icons/social-youtube.svg" },
-  { label: "WhatsApp", href: "https://wa.me/", icon: "/images/icons/social-whatsapp.svg" },
+  { label: "Facebook", href: "https://facebook.com", icon: "social-facebook.svg", w: 26.11, h: 48.04, gap: 0 },
+  { label: "Instagram", href: "https://instagram.com", icon: "social-instagram.svg", w: 38.97, h: 38.97, gap: 27 },
+  { label: "LinkedIn", href: "https://linkedin.com", icon: "social-linkedin.svg", w: 45.26, h: 54.42, gap: 28 },
+  { label: "YouTube", href: "https://youtube.com", icon: "social-youtube.svg", w: 57.12, h: 57.12, gap: 18 },
+  { label: "WhatsApp", href: "https://wa.me/", icon: "social-whatsapp.svg", w: 63.49, h: 63.49, gap: 8.5 },
 ];
 ---
 
-<footer
-  class="bg-brand-blue bg-blend-multiply text-white"
-  style="background-image: linear-gradient(100deg, #1b3f86 0%, rgba(26,70,157,0.5) 40%, rgba(27,67,146,0.5) 57%, #1b3f86 100%);"
->
-  <div class="border-b border-white/10">
-    <div class="mx-auto max-w-7xl px-6 py-6">
-      <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-white/60">
-        Mitgliedschaften
-      </p>
-      <ul class="flex flex-wrap gap-x-8 gap-y-2 text-sm text-white/80">
-        {memberships.map((m) => <li>{m}</li>)}
-      </ul>
-    </div>
+<footer class="relative isolate overflow-hidden bg-white text-white">
+  <div aria-hidden="true" class="gradient-footer-1 absolute inset-x-0 top-[25px] bottom-0 mix-blend-multiply"></div>
+  <div
+    aria-hidden="true"
+    class="gradient-footer-2 absolute inset-0 mix-blend-multiply [clip-path:polygon(0_19.6px,100%_0,100%_100%,0_100%)]"
+  >
   </div>
 
-  <div class="mx-auto max-w-7xl px-6 py-14 text-center">
-    <a href="/" class="inline-block">
-      <img src="/images/logo-mark-white.svg" alt="aktiVaria — Entdecke den Sport" class="h-16 w-auto" />
+  <div class="relative mx-auto max-w-[1658px] px-5 pt-16 pb-12 md:px-10 xl:pt-[115px] xl:pb-[129px]">
+    <h2 class="text-lead font-bold md:text-h3">Mitgliedschaften</h2>
+    <ul class="mt-4 text-body font-bold md:text-body-lg xl:mt-[26px]">
+      {memberships.map((m) => <li>{m}</li>)}
+    </ul>
+
+    <a href="/" class="mx-auto mt-10 block w-[180px] xl:mt-2 xl:w-[323px]">
+      <img
+        src="/images/logo-mark-white.svg"
+        alt="aktiVaria, Entdecke den Sport"
+        width="323"
+        height="133"
+        class="h-auto w-full"
+      />
     </a>
 
-    <div class="mx-auto mt-10 grid max-w-2xl gap-8 sm:grid-cols-3">
-      {
-        columns.map((col) => (
-          <ul class="space-y-3 text-base">
-            {col.map((link) => (
-              <li>
-                <a href={link.href} class="text-white/90 hover:text-white">
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        ))
-      }
-    </div>
+    <nav aria-label="Fußzeile" class="mt-8 md:mx-auto md:w-fit xl:mt-[30px]">
+      <div class="flex flex-col gap-2 md:grid md:grid-cols-3 md:gap-x-16 xl:grid-cols-[338px_410px_auto] xl:gap-x-0">
+        {
+          columns.map((col) => (
+            <ul class="flex flex-col gap-2">
+              {col.map((link) => (
+                <li>
+                  <a
+                    href={link.href}
+                    class="relative inline-block px-1 py-3 text-body-lg whitespace-nowrap text-white after:absolute after:top-[42px] after:left-1 after:h-px after:w-[60px] after:bg-white after:opacity-0 hover:after:opacity-100 focus-visible:shadow-[var(--shadow-focus)] focus-visible:outline-none"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ))
+        }
+      </div>
+    </nav>
 
-    <div class="mt-10 flex justify-center gap-5">
+    <ul class="mt-10 flex items-center justify-center xl:mt-[44px]">
       {
         social.map((s) => (
-          <a href={s.href} class="opacity-70 transition hover:opacity-100" aria-label={s.label}>
-            <img src={s.icon} alt="" class="h-6 w-6" />
-          </a>
+          <li style={`margin-left: ${s.gap}px`}>
+            <a
+              href={s.href}
+              aria-label={s.label}
+              class="block transition-opacity hover:opacity-80 focus-visible:shadow-[var(--shadow-focus)] focus-visible:outline-none"
+            >
+              <img src={`/images/icons/${s.icon}`} alt="" width={s.w} height={s.h} style={`width:${s.w}px;height:${s.h}px`} />
+            </a>
+          </li>
         ))
       }
-    </div>
+    </ul>
 
-    <p class="mt-8 text-sm font-bold text-white/90">© 2026 aktiVaria GmbH</p>
+    <p class="mt-8 text-center text-body font-bold xl:mt-[30px]">© 2026 aktiVaria GmbH</p>
   </div>
 </footer>

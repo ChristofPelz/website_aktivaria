@@ -1,0 +1,106 @@
+---
+import QualificationCard from "./QualificationCard.astro";
+
+const img = (file: string) => `/images/home/${file}`;
+
+const certifiedOfferings = [
+  {
+    title: "Bewegungsschule",
+    tag: "Geprüftes Präventionsangebot",
+    description:
+      "Das Kursangebot „aktiVaria Bewegungsschule – Beweglichkeit und Ausdauer“ wurde nach den Qualitätskriterien des Leitfadens Prävention gemäß § 20 SGB V geprüft. Das Konzept verbindet altersgerechte Bewegung mit der Förderung von Ausdauer, Beweglichkeit und körperlicher Aktivität.",
+    logo: { src: img("qualifikation-bewegungsschule.png"), w: 125, h: 99 },
+  },
+  {
+    title: "Rücken-Fit",
+    tag: "Qualitätsgeprüftes Rückentraining",
+    description:
+      "Das Präventionsangebot „Rücken-Fit Kraft/Koordination“ wurde nach den Qualitätskriterien des Leitfadens Prävention gemäß § 20 SGB V geprüft. Der Kurs dient der Kräftigung des Bewegungsapparates, der Verbesserung der Koordination und der Vorbeugung von Rückenbeschwerden.",
+    logo: { src: img("qualifikation-rueckenfit.svg"), w: 108.99, h: 124.92 },
+  },
+  {
+    title: "Faszientraining",
+    tag: "Professionelles Faszientraining",
+    description:
+      "Die Fachqualifikation zum Faszientrainer umfasst fundierte Kenntnisse zu Anatomie und Physiologie, Faszientechniken, Flossing, Cupping sowie zum professionellen Aufbau von Trainingsstunden. Dadurch können Beweglichkeit, Körperwahrnehmung und funktionale Bewegungsabläufe gezielt gefördert werden.",
+    logo: { src: img("qualifikation-faszientraining.png"), w: 117, h: 117 },
+  },
+];
+
+const teamQualifications = [
+  {
+    title: "AquaFitness",
+    tag: "Qualifikation im Bereich AquaFitness",
+    description:
+      "Durch die erfolgreich absolvierte AquaFitness-Ausbildung nach den Richtlinien des Bundesverbandes für AquaPädagogik verfügt unser Team über fundierte Kenntnisse für die professionelle Gestaltung abwechslungsreicher und gesundheitsorientierter Bewegungsangebote im Wasser.",
+    logo: { src: img("qualifikation-aquafitness.png"), w: 194, h: 111 },
+  },
+  {
+    title: "Präventionskurskonzept „Beweglichkeitsorientiertes Faszientraining“",
+    tag: "Geprüftes Konzept für beweglichkeitsorientiertes Faszientraining",
+    description:
+      "Unser Team verfügt über eine Einweisung in ein nach § 20 Abs. 1 SGB V geprüftes Präventionskurskonzept. Im Mittelpunkt stehen die Reduzierung von Bewegungsmangel sowie die gezielte Förderung von Beweglichkeit und gesundheitsorientierter Aktivität.",
+    logo: { src: img("qualifikation-praeventionskurskonzept.png"), w: 117, h: 117 },
+  },
+  {
+    title: "MHFA-Ersthelfer für psychische Gesundheit",
+    tag: "Erste Hilfe für psychische Gesundheit",
+    description:
+      "Als ausgebildeter MHFA-Ersthelfer verfügt Mario Middendorf über Kenntnisse, um Anzeichen psychischer Belastungen frühzeitig wahrzunehmen, angemessen darauf zu reagieren und Betroffene bei der Suche nach professioneller Unterstützung zu begleiten.",
+    logo: { src: img("qualifikation-mhfa.png"), w: 150, h: 67 },
+  },
+  {
+    title: "Berater und Coach für Persönlichkeitsentwicklung",
+    tag: "Persönlichkeitsentwicklung und Wohlbefinden stärken",
+    description:
+      "Die Weiterbildung „Lernziel Wohlbefinden“ des Fritz-Schubert-Instituts vermittelt wissenschaftlich fundierte Ansätze zur ganzheitlichen Persönlichkeitsentwicklung. Dazu gehören unter anderem die Förderung von Stärken, Selbstwirksamkeit, Motivation, Entscheidungsfähigkeit, Reflexion und psychologischem Wohlbefinden.",
+    logo: { src: img("qualifikation-berater-coach.png"), w: 136, h: 81 },
+    textWidth: 299,
+  },
+  {
+    title: "Ausbildereignung nach AEVO",
+    tag: "Geprüfte Ausbildungsqualität",
+    description:
+      "Mit der erfolgreich bestandenen Prüfung nach der Ausbilder-Eignungsverordnung verfügt Mario Middendorf über nachgewiesene berufs- und arbeitspädagogische Kenntnisse und Fähigkeiten. Damit schafft aktiVaria auch bei der Anleitung und Entwicklung von Mitarbeitenden und Nachwuchskräften professionelle Rahmenbedingungen.",
+    logo: { src: img("qualifikation-ausbildereignung.png"), w: 129, h: 26, backdrop: { w: 134, h: 26 } },
+    textWidth: 285,
+  },
+  {
+    title: "Prüferqualifikation Deutsches Sportabzeichen",
+    tag: "Qualifikation rund um das Deutsche Sportabzeichen",
+    description:
+      "Durch die Weiterbildung des Landessportbundes Sachsen-Anhalt verfügt Mario Middendorf über Kenntnisse zu den Prüfungsanforderungen, Leistungsbedingungen, Sicherheitsaspekten und Abläufen des Deutschen Sportabzeichens.",
+    logo: { src: img("qualifikation-sportabzeichen.png"), w: 140, h: 30 },
+  },
+  {
+    title: "Deutsches Rettungsschwimmabzeichen",
+    tag: "Geprüfte Sicherheit im Wasser",
+    description:
+      "Unsere Trainer verfügen über das Deutsche Rettungsschwimmabzeichen und sind für das Erkennen von Gefahrensituationen sowie grundlegende Maßnahmen der Wasserrettung qualifiziert. Sicherheit und verantwortungsbewusstes Handeln bilden damit eine wichtige Grundlage unserer Schwimmangebote.",
+    logo: { src: img("qualifikation-rettungsschwimmabzeichen.png"), w: 120, h: 118 },
+    textWidth: 299,
+  },
+];
+
+const grid =
+  "mx-auto flex max-w-[1597px] flex-wrap justify-center gap-x-[50px] gap-y-[34px] [&>*]:basis-full xl:[&>*]:basis-[calc((100%-50px)/2)] 2xl:[&>*]:basis-[calc((100%-100px)/3)]";
+---
+
+<section class="mx-auto max-w-[1640px] px-5 pb-20 md:px-10 xl:pb-[209px] 3xl:px-0">
+  <div class="mx-auto max-w-[1278px] text-center">
+    <h2 class="text-lead font-medium xl:text-h3">Qualifikationen &amp; zertifizierte Angebote</h2>
+    <p class="mt-4 text-body font-medium xl:mt-[26px] xl:text-body-lg">
+      Qualitätsgeprüfte Konzepte und fundierte Fachkompetenz bilden die Grundlage unserer Arbeit.
+    </p>
+  </div>
+
+  <h3 class="mt-16 text-center text-lead font-medium xl:mt-[111px] xl:text-h3">Zertifizierte Angebote</h3>
+  <div class:list={["mt-8 xl:mt-[48px]", grid]}>
+    {certifiedOfferings.map((q) => <QualificationCard {...q} />)}
+  </div>
+
+  <h3 class="mt-16 text-center text-lead font-medium xl:mt-[52px] xl:text-h3">Qualifikationen unseres Teams</h3>
+  <div class:list={["mt-8 xl:mt-[48px]", grid]}>
+    {teamQualifications.map((q) => <QualificationCard {...q} />)}
+  </div>
+</section>

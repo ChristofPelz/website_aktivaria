@@ -1,0 +1,109 @@
+---
+import OfferTile from "./OfferTile.astro";
+
+// Werte je Kachel aus Figma (Foto- und Ellipsenlage relativ zur Kachel).
+const tiles = [
+  {
+    title: "Bewegungsschule",
+    href: "/bewegungsschule",
+    image: "/images/home/category-bewegungsschule.png",
+    color: "var(--color-accent-yellow)",
+    labelColor: "var(--color-brand-blue-900)",
+    photo: { x: 0, y: -117, w: 318, h: 424 },
+    ellipse: { x: -275, y: 194 },
+    label: { x: 23, y: 241 },
+  },
+  {
+    title: "Schwimmschule",
+    href: "/schwimmschule",
+    image: "/images/home/category-schwimmschule.png",
+    color: "var(--color-accent-sky)",
+    labelColor: "var(--color-brand-blue-900)",
+    photo: { x: 0, y: -94, w: 318, h: 425 },
+    ellipse: { x: -278, y: 194 },
+    label: { x: 31, y: 241 },
+  },
+  {
+    title: "Kinderbetreuung",
+    href: "/kinderbetreuung",
+    image: "/images/home/category-kinderbetreuung.png",
+    color: "var(--color-accent-rose)",
+    labelColor: "var(--color-brand-blue-900)",
+    photo: { x: -34, y: -4, w: 447, h: 298 },
+    ellipse: { x: -273, y: 188 },
+    label: { x: 32, y: 233 },
+    shiftY: 8,
+  },
+  {
+    title: "Betriebliche Gesundheitsförderung",
+    href: "/unternehmen",
+    image: "/images/home/category-bgf.png",
+    color: "var(--color-brand-teal-700)",
+    labelColor: "#fff",
+    photo: { x: 0, y: -81, w: 325, h: 435 },
+    ellipse: { x: -273, y: 189 },
+    label: { x: 31, y: 228 },
+  },
+  {
+    title: "Ernährungsschule",
+    href: "/ernaehrung",
+    image: "/images/home/category-ernaehrung.png",
+    color: "var(--color-accent-orange)",
+    labelColor: "var(--color-brand-blue-900)",
+    photo: { x: -43, y: -75, w: 481, h: 374 },
+    ellipse: { x: -268, y: 190 },
+    label: { x: 31, y: 252 },
+  },
+];
+---
+
+<!-- Kein eigener Stapelkontext: die Blasenebene blendet per "screen" bis in den Hero. -->
+<section class="relative bg-surface-tint-blue xl:bg-transparent">
+  <div aria-hidden="true" class="hidden xl:block">
+    <img
+      src="/images/home/texture-kategorien.webp"
+      alt=""
+      class="absolute inset-0 h-full w-full object-cover object-top"
+    />
+    <div class="gradient-kategorien absolute inset-0 mix-blend-multiply"></div>
+    <img
+      src="/images/home/kategorien-bubbles.webp"
+      alt=""
+      width="1920"
+      height="1561"
+      class="pointer-events-none absolute top-[-6.51vw] left-0 h-auto w-full max-w-none mix-blend-screen"
+    />
+  </div>
+
+  <div class="relative mx-auto max-w-[1640px] px-5 pt-12 pb-12 md:px-10 xl:pt-[252px] xl:pb-[193px]">
+    <div class="mx-auto max-w-[1278px] text-center xl:text-white">
+      <h2 class="text-lead font-medium md:text-h4 md:font-bold xl:text-h3 xl:font-medium">
+        Gesundheit und Entwicklung, die sich gut anfühlen
+      </h2>
+      <div class="mt-4 text-body xl:mt-[26px] xl:text-body-lg">
+        <p>
+          Bei aktiVaria steht der Mensch im Mittelpunkt. Wir schaffen Räume, in denen Kinder
+          spielerisch wachsen, Familien wertvolle gemeinsame Erfahrungen sammeln und Unternehmen
+          Gesundheit nachhaltig in ihren Arbeitsalltag integrieren können.
+        </p>
+        <p>
+          Unsere Angebote verbinden fundiertes Fachwissen mit Bewegung, Freude und persönlicher
+          Begleitung. Dabei entstehen Erlebnisse, die stärken, verbinden und langfristig etwas
+          bewegen.
+        </p>
+      </div>
+    </div>
+
+    <ul
+      class="mx-auto mt-16 grid gap-4 md:grid-cols-2 xl:mt-[95px] xl:flex xl:max-w-[1193px] xl:flex-wrap xl:justify-center xl:gap-x-[119px] xl:gap-y-[81px]"
+    >
+      {
+        tiles.map((tile, i) => (
+          <li class:list={[i === tiles.length - 1 && "md:col-span-2"]}>
+            <OfferTile {...tile} />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

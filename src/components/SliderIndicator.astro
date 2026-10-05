@@ -1,0 +1,63 @@
+---
+// Fünfteilige Positionsanzeige unter Bildstreifen und Partnerlogos
+// (icon/was-uns-bewegt-momente-3). Aktives Segment 167 px, übrige 59 px,
+// auf dem Smartphone verkleinert.
+// Lässt sich der zugehörige Streifen nicht scrollen, bleibt Segment 1 aktiv.
+interface Props {
+  target: string;
+  label: string;
+  class?: string;
+}
+
+const { target, label, class: className = "" } = Astro.props;
+const segments = [0, 1, 2, 3, 4];
+---
+
+<div
+  class:list={["mx-auto flex w-fit items-center gap-4 md:gap-[28px]", className]}
+  data-slider-indicator={target}
+  role="group"
+  aria-label={label}
+>
+  {
+    segments.map((i) => (
+      <button
+        type="button"
+        data-index={i}
+        aria-label={`Abschnitt ${i + 1}`}
+        aria-current={i === 0 ? "true" : undefined}
+        class="h-1.5 w-[34px] rounded-[3px] bg-neutral-400/45 transition-[width,background-color] duration-300 aria-[current=true]:w-[96px] aria-[current=true]:bg-neutral-400/77 md:w-[59px] md:aria-[current=true]:w-[167px] focus-visible:shadow-[var(--shadow-focus)] focus-visible:outline-none"
+      />
+    ))
+  }
+</div>
+
+<script>
+  function setup(indicator: HTMLElement) {
+    const strip = document.querySelector<HTMLElement>(`[data-slider="${indicator.dataset.sliderIndicator}"]`);
+    if (!strip) return;
+    const buttons = [...indicator.querySelectorAll<HTMLButtonElement>("button")];
+    const max = () => strip.scrollWidth - strip.clientWidth;
+
+    const update = () => {
+      const range = max();
+      const active = range > 0 ? Math.round((strip.scrollLeft / range) * (buttons.length - 1)) : 0;
+      buttons.forEach((b, i) => {
+        if (i === active) b.setAttribute("aria-current", "true");
+        else b.removeAttribute("aria-current");
+      });
+    };
+
+    buttons.forEach((b, i) =>
+      b.addEventListener("click", () => {
+        strip.scrollTo({ left: (max() * i) / (buttons.length - 1), behavior: "smooth" });
+      }),
+    );
+
+    strip.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    update();
+  }
+
+  document.querySelectorAll<HTMLElement>("[data-slider-indicator]").forEach(setup);
+</script>
