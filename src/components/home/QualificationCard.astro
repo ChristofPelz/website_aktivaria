@@ -1,40 +1,49 @@
 ---
-// Karte aus "07 Qualifikationen": 499 x 286, Radius 60, Logo mittig in der
-// linken Spalte (184 px), Text vertikal zentriert. Breiten der Textblöcke wie in Figma.
+// Qualifikationskarte nach Vorlage: Logo (max. 48 x 48) links neben Titel und
+// Untertitel, darunter der Beschreibungstext über die volle Kartenbreite.
 interface Props {
   title: string;
   tag: string;
   description: string;
-  /** backdrop: graue Fläche hinter dem Logo (icon/qualifikationen-18 beim IHK-Logo) */
+  /** w/h: Seitenverhältnis des Logos; backdrop: graue Fläche hinter dem IHK-Logo (icon/qualifikationen-18) */
   logo: { src: string; w: number; h: number; backdrop?: { w: number; h: number } };
-  textWidth?: number;
 }
 
-const { title, tag, description, logo, textWidth = 267 } = Astro.props;
+const { title, tag, description, logo } = Astro.props;
 ---
 
-<article
-  class="flex min-h-[286px] w-full max-w-[499px] flex-col items-center gap-6 rounded-2xl bg-white px-6 py-8 shadow-card md:grid md:grid-cols-[184px_1fr] md:gap-0 md:py-6 md:pr-4 md:pl-0"
->
-  <div
-    class="justify-self-center bg-neutral-200"
-    style={logo.backdrop
-      ? `width:${logo.backdrop.w}px;height:${logo.backdrop.h}px`
-      : "background:none"}
-  >
-    <img
-      src={logo.src}
-      alt=""
-      loading="lazy"
-      width={logo.w}
-      height={logo.h}
-      class="max-w-none"
-      style={`width:${logo.w}px;height:${logo.h}px`}
-    />
+<article class="self-start rounded-md border border-neutral-200 bg-white p-8 shadow-[0_3px_6px_rgb(0_0_0/0.06)]">
+  <div class="flex min-h-12 items-start gap-4">
+    <div class="flex size-12 shrink-0 items-center justify-center">
+      {
+        logo.backdrop ? (
+          <div class="w-12 bg-neutral-200" style={`aspect-ratio:${logo.backdrop.w}/${logo.backdrop.h}`}>
+            <img
+              src={logo.src}
+              alt=""
+              loading="lazy"
+              width={logo.w}
+              height={logo.h}
+              class="h-auto"
+              style={`width:${(logo.w / logo.backdrop.w) * 100}%`}
+            />
+          </div>
+        ) : (
+          <img
+            src={logo.src}
+            alt=""
+            loading="lazy"
+            width={logo.w}
+            height={logo.h}
+            class="h-auto max-h-12 w-auto max-w-12"
+          />
+        )
+      }
+    </div>
+    <div class="min-w-0 hyphens-auto">
+      <h4 class="text-body-lg font-bold">{title}</h4>
+      <p class="mt-0.5 text-caption font-medium">{tag}</p>
+    </div>
   </div>
-  <div class="w-full" style={`max-width:${textWidth}px`}>
-    <h4 class="max-w-[267px] text-body-lg font-bold">{title}</h4>
-    <p class="mt-2 text-caption font-medium">{tag}</p>
-    <p class="text-caption">{description}</p>
-  </div>
+  <p class="mt-8 text-caption">{description}</p>
 </article>

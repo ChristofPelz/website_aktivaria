@@ -23,7 +23,7 @@ const certifiedOfferings = [
     tag: "Professionelles Faszientraining",
     description:
       "Die Fachqualifikation zum Faszientrainer umfasst fundierte Kenntnisse zu Anatomie und Physiologie, Faszientechniken, Flossing, Cupping sowie zum professionellen Aufbau von Trainingsstunden. Dadurch können Beweglichkeit, Körperwahrnehmung und funktionale Bewegungsabläufe gezielt gefördert werden.",
-    logo: { src: img("qualifikation-faszientraining.png"), w: 117, h: 117 },
+    logo: { src: img("qualifikation-faszientraining.png"), w: 164, h: 158 },
   },
 ];
 
@@ -33,7 +33,7 @@ const teamQualifications = [
     tag: "Qualifikation im Bereich AquaFitness",
     description:
       "Durch die erfolgreich absolvierte AquaFitness-Ausbildung nach den Richtlinien des Bundesverbandes für AquaPädagogik verfügt unser Team über fundierte Kenntnisse für die professionelle Gestaltung abwechslungsreicher und gesundheitsorientierter Bewegungsangebote im Wasser.",
-    logo: { src: img("qualifikation-aquafitness.png"), w: 194, h: 111 },
+    logo: { src: img("qualifikation-aquafitness.png"), w: 166, h: 165 },
   },
   {
     title: "Präventionskurskonzept „Beweglichkeitsorientiertes Faszientraining“",
@@ -47,7 +47,7 @@ const teamQualifications = [
     tag: "Erste Hilfe für psychische Gesundheit",
     description:
       "Als ausgebildeter MHFA-Ersthelfer verfügt Mario Middendorf über Kenntnisse, um Anzeichen psychischer Belastungen frühzeitig wahrzunehmen, angemessen darauf zu reagieren und Betroffene bei der Suche nach professioneller Unterstützung zu begleiten.",
-    logo: { src: img("qualifikation-mhfa.png"), w: 150, h: 67 },
+    logo: { src: img("qualifikation-mhfa.png"), w: 193, h: 91 },
   },
   {
     title: "Berater und Coach für Persönlichkeitsentwicklung",
@@ -55,7 +55,6 @@ const teamQualifications = [
     description:
       "Die Weiterbildung „Lernziel Wohlbefinden“ des Fritz-Schubert-Instituts vermittelt wissenschaftlich fundierte Ansätze zur ganzheitlichen Persönlichkeitsentwicklung. Dazu gehören unter anderem die Förderung von Stärken, Selbstwirksamkeit, Motivation, Entscheidungsfähigkeit, Reflexion und psychologischem Wohlbefinden.",
     logo: { src: img("qualifikation-berater-coach.png"), w: 136, h: 81 },
-    textWidth: 299,
   },
   {
     title: "Ausbildereignung nach AEVO",
@@ -63,7 +62,6 @@ const teamQualifications = [
     description:
       "Mit der erfolgreich bestandenen Prüfung nach der Ausbilder-Eignungsverordnung verfügt Mario Middendorf über nachgewiesene berufs- und arbeitspädagogische Kenntnisse und Fähigkeiten. Damit schafft aktiVaria auch bei der Anleitung und Entwicklung von Mitarbeitern und Nachwuchskräften professionelle Rahmenbedingungen.",
     logo: { src: img("qualifikation-ausbildereignung.png"), w: 129, h: 26, backdrop: { w: 134, h: 26 } },
-    textWidth: 285,
   },
   {
     title: "Prüferqualifikation Deutsches Sportabzeichen",
@@ -77,13 +75,14 @@ const teamQualifications = [
     tag: "Geprüfte Sicherheit im Wasser",
     description:
       "Unsere Trainer verfügen über das Deutsche Rettungsschwimmabzeichen und sind für das Erkennen von Gefahrensituationen sowie grundlegende Maßnahmen der Wasserrettung qualifiziert. Sicherheit und verantwortungsbewusstes Handeln bilden damit eine wichtige Grundlage unserer Schwimmangebote.",
-    logo: { src: img("qualifikation-rettungsschwimmabzeichen.png"), w: 120, h: 118 },
-    textWidth: 299,
+    logo: { src: img("qualifikation-rettungsschwimmabzeichen.png"), w: 173, h: 173 },
   },
 ];
 
-const grid =
-  "mx-auto flex max-w-[1597px] flex-wrap justify-center gap-x-[50px] gap-y-[34px] [&>*]:basis-full xl:[&>*]:basis-[calc((100%-50px)/2)] 2xl:[&>*]:basis-[calc((100%-100px)/3)]";
+// Karten wie in der Vorlage als Mauerwerk: Spalte = Position in der Reihe
+// (1-2-3, 1-2-3, ...), jede Karte so hoch wie ihr Inhalt. Ohne JavaScript bleibt ein
+// normales Raster mit oben bündigen Karten.
+const grid = "qualifikationen-grid mx-auto grid max-w-[1597px] grid-cols-[minmax(0,1fr)] gap-8 md:grid-cols-2 xl:grid-cols-3";
 ---
 
 <section class="mx-auto max-w-[1640px] px-5 pb-20 md:px-10 xl:pb-[209px] 3xl:px-0">
@@ -94,13 +93,83 @@ const grid =
     </p>
   </div>
 
-  <h3 class="mt-16 text-center text-lead font-medium xl:mt-[111px] xl:text-h3">Zertifizierte Angebote</h3>
-  <div class:list={["mt-8 xl:mt-[48px]", grid]}>
+  <h3 class="mx-auto mt-16 max-w-[1597px] text-lead font-medium xl:mt-[111px] xl:text-h3">Zertifizierte Angebote</h3>
+  <div class:list={["mt-8 md:mt-[72px]", grid]} data-masonry>
     {certifiedOfferings.map((q) => <QualificationCard {...q} />)}
   </div>
 
-  <h3 class="mt-16 text-center text-lead font-medium xl:mt-[52px] xl:text-h3">Qualifikationen unseres Teams</h3>
-  <div class:list={["mt-8 xl:mt-[48px]", grid]}>
+  <h3 class="mx-auto mt-16 max-w-[1597px] text-lead font-medium md:mt-[72px] xl:text-h3">Qualifikationen unseres Teams</h3>
+  <div class:list={["mt-8 md:mt-[72px]", grid]} data-masonry>
     {teamQualifications.map((q) => <QualificationCard {...q} />)}
   </div>
 </section>
+
+<style>
+  @media (width >= 48rem) {
+    .qualifikationen-grid {
+      grid-auto-flow: row dense;
+    }
+
+    .qualifikationen-grid > :global(:nth-child(odd)) {
+      grid-column: 1;
+    }
+
+    .qualifikationen-grid > :global(:nth-child(even)) {
+      grid-column: 2;
+    }
+
+    /* Mit JavaScript: 8-px-Rasterzeilen, jede Karte belegt so viele wie ihre Höhe plus Abstand. */
+    .qualifikationen-grid.is-masonry {
+      grid-auto-rows: 8px;
+      row-gap: 0;
+      margin-bottom: -32px;
+    }
+  }
+
+  @media (width >= 80rem) {
+    .qualifikationen-grid > :global(:nth-child(3n + 1)) {
+      grid-column: 1;
+    }
+
+    .qualifikationen-grid > :global(:nth-child(3n + 2)) {
+      grid-column: 2;
+    }
+
+    .qualifikationen-grid > :global(:nth-child(3n)) {
+      grid-column: 3;
+    }
+  }
+</style>
+
+<script>
+  const ROW = 8;
+  const GAP = 32;
+  const grids = [...document.querySelectorAll<HTMLElement>("[data-masonry]")];
+
+  // Erst ab zwei Spalten (48rem), darunter stehen die Karten einfach untereinander.
+  const twoColumns = window.matchMedia("(width >= 48rem)");
+
+  function layout() {
+    for (const grid of grids) {
+      const cards = [...grid.children] as HTMLElement[];
+      grid.classList.toggle("is-masonry", twoColumns.matches);
+      for (const card of cards) {
+        card.style.gridRowEnd = twoColumns.matches
+          ? `span ${Math.ceil((card.getBoundingClientRect().height + GAP) / ROW)}`
+          : "";
+      }
+    }
+  }
+
+  let frame = 0;
+  const schedule = () => {
+    cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(layout);
+  };
+
+  layout();
+  document.fonts?.ready.then(schedule);
+  window.addEventListener("resize", schedule);
+  twoColumns.addEventListener("change", schedule);
+  grids.forEach((grid) => grid.querySelectorAll("img").forEach((img) => img.addEventListener("load", schedule)));
+</script>
