@@ -56,4 +56,9 @@ ersten Farbstopp (Weiß) zeichnet, Browser aber mit dem letzten (Blau).
   40 px pro Sekunde. Sie halten beim Überfahren mit der Maus, bei Tastaturfokus und beim Antippen an und
   stehen still, wenn im System "Bewegung reduzieren" eingestellt ist. Die Anzeige darunter folgt dem
   Durchlauf, ein Klick springt an die Stelle.
+- Die Qualifikationskarten folgen einer nachgereichten Vorlage statt dem Seitenentwurf: Logo (max. 48 x 48)
+  neben Titel und Untertitel, Beschreibung darunter über die volle Breite, Karten mit hellem Rand und
+  Radius 20. Sie stehen als Mauerwerk (Spalte nach Position in der Reihe, jede Karte so hoch wie ihr
+  Inhalt), die Zwischenüberschriften sind linksbündig. Bei vier Logos ist der transparente Rand
+  abgeschnitten, damit sie die 48-px-Fläche ausfüllen.
 - Roboto wird selbst ausgeliefert (`@fontsource/roboto`) statt von Google Fonts geladen.
